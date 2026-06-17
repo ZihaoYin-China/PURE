@@ -1,0 +1,1257 @@
+﻿%% 
+%% Copyright 2019-2024 Elsevier Ltd
+%% 
+%% This file is part of the 'CAS Bundle'.
+%% --------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.3c of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'CAS Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for cas-dc documentclass for 
+%% double column output.
+
+\documentclass[a4paper,fleqn]{cas-dc}
+
+% If the frontmatter runs over more than one page
+% use the longmktitle option.
+
+%\documentclass[a4paper,fleqn,longmktitle]{cas-dc}
+
+%\usepackage[numbers]{natbib}
+\usepackage[authoryear]{natbib}
+%\usepackage[numbers,sort&compress]{natbib}
+%\usepackage[authoryear,longnamesfirst]{natbib}
+\usepackage{placeins}
+
+%%%Author macros
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+%%%
+
+% Uncomment and use as if needed
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcounter{algorithm}
+\renewcommand{\thealgorithm}{\arabic{algorithm}}
+\newcommand{\safequalimage}[1]{%
+  \IfFileExists{#1}{%
+    \includegraphics[width=\linewidth,height=0.62in,keepaspectratio]{#1}%
+  }{%
+    \framebox[\linewidth][c]{\rule{0pt}{0.62in}\scriptsize image unavailable}%
+  }%
+}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newdefinition{rmk}{Remark}
+%\newproof{pf}{Proof}
+%\newproof{pot}{Proof of Theorem \ref{thm}}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+% Short title
+\shorttitle{}    
+
+% Short author
+\shortauthors{}  
+
+% Main title of the paper
+\title [mode = title]{PURE: Posterior-Preserving Uncertainty-Aware Routing with Evidential Selection and Verification for Multimodal Retrieval-Augmented Generation}  
+
+% Title footnote mark
+% eg: \tnotemark[1]
+\tnotemark[1] 
+
+% Title footnote 1.
+% eg: \tnotetext[1]{Title footnote text}
+\tnotetext[1]{} 
+
+% First author
+%
+% Options: Use if required
+% eg: \author[1,3]{Author Name}[type=editor,
+%       style=chinese,
+%       auid=000,
+%       bioid=1,
+%       prefix=Sir,
+%       orcid=0000-0000-0000-0000,
+%       facebook=<facebook id>,
+%       twitter=<twitter id>,
+%       linkedin=<linkedin id>,
+%       gplus=<gplus id>]
+
+\author[1]{}%[<options>]
+
+% Corresponding author indication
+\cormark[1]
+
+% Footnote of the first author
+\fnmark[1]
+
+% Email id of the first author
+\ead{}
+
+% URL of the first author
+\ead[url]{}
+
+% Credit authorship
+% eg: \credit{Conceptualization of this study, Methodology, Software}
+\credit{}
+
+% Address/affiliation
+\affiliation[1]{organization={},
+            addressline={}, 
+            city={},
+%          citysep={}, % Uncomment if no comma needed between city and postcode
+            postcode={}, 
+            state={},
+            country={}}
+
+\author[2]{}%[]
+
+% Footnote of the second author
+\fnmark[2]
+
+% Email id of the second author
+\ead{}
+
+% URL of the second author
+\ead[url]{}
+
+% Credit authorship
+\credit{}
+
+% Address/affiliation
+\affiliation[2]{organization={},
+            addressline={}, 
+            city={},
+%          citysep={}, % Uncomment if no comma needed between city and postcode
+            postcode={}, 
+            state={},
+            country={}}
+
+% Corresponding author text
+\cortext[1]{Corresponding author}
+
+% Footnote text
+\fntext[1]{}
+
+% For a title note without a number/mark
+%\nonumnote{}
+
+% Here goes the abstract
+\begin{abstract}
+Multimodal Retrieval-Augmented Generation (RAG) systems confront a fundamental pre-retrieval evidence-allocation dilemma rather than a simple retrieval-invocation problem. Before evidence is observed, a system must allocate limited branch budget across heterogeneous evidence actions, including parametric answering, paragraph-level text retrieval, document-level context retrieval, and image-based retrieval. This decision is uncertain yet consequential: hard-routing methods may prematurely collapse routing uncertainty and discard the only useful evidence source, whereas ungated multi-path retrieval can expose the generator or verifier to redundant, noisy, or conflicting evidence. To address this dilemma, we propose PURE, a posterior-preserving uncertainty-aware routing framework that operationalizes routing uncertainty as an executable decision signal across the retrieval-to-generation pipeline. PURE integrates a VIB-regularized evidential router, a Dirichlet-concentration branch-budget-aware selector, and posterior-coupled answer verification, allowing router outputs to serve as active priors for retrieval selection and candidate conflict resolution. Under a shared retriever set, generator, executable-action interface, and evaluation protocol, PURE achieves consistent gains on retrieval-sensitive in-domain benchmarks and favorable zero-shot transfer to out-of-domain QA settings. Collectively, these results demonstrate that uncertainty-aware multimodal RAG should preserve routing uncertainty as an operational posterior signal across branch-budget-aware selection and posterior-coupled verification, thereby preventing its premature collapse during the initial routing stage.
+\end{abstract}
+
+% Use if graphical abstract is present
+%\begin{graphicalabstract}
+%\includegraphics{}
+%\end{graphicalabstract}
+
+
+%\nocite{*}
+
+% Keywords
+% Each keyword is seperated by \sep
+\begin{keywords}
+Multimodal Retrieval-Augmented Generation \sep Dynamic Routing \sep Uncertainty Estimation \sep Evidential Deep Learning \sep Budget-Aware Retrieval \sep Answer Verification
+\end{keywords}
+
+\maketitle
+
+% Main text
+\section{Introduction}\label{sec:introduction}
+In multimodal RAG, evidence acquisition is no longer a single text-retrieval operation. A query may be answered without retrieval, or supported by paragraph-level text, broader document context, or image-based evidence, and these alternatives differ in reliability, cost, and downstream usefulness \citep{Lewis2020RAG,Izacard2021Leveraging,Chen2022MuRAG,Hu2023Reveal,Wei2024UniIR,Faysse2025ColPali}. This makes retrieval a pre-generation evidence-allocation problem: before observing the actual retrieved content, the system must decide which evidence actions to execute and how much branch budget to allocate to alternative paths. A wrong routing decision can exclude the only useful evidence source before generation, while overly broad retrieval can introduce distracting, redundant, or conflicting contexts that make answer verification harder. Therefore, the central challenge is not simply to retrieve more evidence, but to determine how routing uncertainty over heterogeneous evidence paths should be computationally represented, preserved beyond the initial routing decision, and reused throughout the multimodal RAG pipeline.
+
+This routing decision is far from a peripheral intent-classification step. It determines which evidence the generator can observe and which candidate answers remain available for downstream verification. A wrong route may skip retrieval when external evidence is needed, select text when image-caption evidence is decisive, or retrieve a short passage when broader document-level context is required \citep{Mallen2023Trust,Chang2022WebQA}. Conversely, unnecessary or poorly targeted retrieval can introduce distracting evidence and degrade answer grounding \citep{Shi2023Distracted}. More importantly, once a deterministic router commits to a single path, the distributional signal over alternative evidence sources is discarded, even when an unselected branch could have supported the correct answer. In this sense, retrieval routing acts as a control layer not only for evidence quality, but also for whether routing uncertainty is preserved or prematurely consumed.
+
+We argue that a fundamental limitation of existing multimodal RAG routing is premature uncertainty collapse. Deterministic hard routers are efficient, but they reduce an uncertain retrieval decision to a single irreversible action, potentially removing the correct evidence source before generation \citep{Jeong2024AdaptiveRAG,Abootorabi2025AskAnyModality}. Once this commitment excludes the useful branch from the candidate set, even a strong generator or verifier may be unable to recover. Ungated multi-path retrieval provides the opposite extreme: it preserves coverage by querying multiple branches \citep{Shi2024REPLUG,Liu2025RoseRAG}, but does not explicitly model the reliability of competing evidence paths. As a result, the generator or verifier may be exposed to redundant, noisy, or conflicting evidence, and simple concatenation or uniform comparison can dilute useful signals \citep{Shi2023Distracted,Liu2025RoseRAG,Li2025BiomedicalRAG}. Thus, the key tension is not simply single-path versus multi-path execution, but whether the routing distribution is collapsed, ignored, or preserved as an actionable decision signal. Figure~\ref{fig:routing_comparison} illustrates this contrast: deterministic hard routing collapses an uncertain decision into a brittle single path, naive multi-path retrieval preserves coverage by broadcasting to multiple branches, and PURE preserves routing uncertainty for branch-budget-aware selection and posterior-coupled verification.
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=\textwidth]{Figure_01.png}
+    \caption{From deterministic hard retrieval routing to posterior-preserving evidential routing with branch-budget-aware selection. Deterministic hard routing makes brittle one-shot retrieval decisions, while ungated multi-path retrieval broadcasts queries across paths and can introduce distracting or inconsistent evidence. PURE instead preserves routing uncertainty for branch-budget-aware retrieval selection and posterior-coupled answer verification.}
+    \label{fig:routing_comparison}
+\end{figure*}
+
+Several recent lines of work address parts of this problem. Adaptive retrieval studies when external knowledge should be invoked \citep{Jiang2023FLARE,Asai2023SelfRAG}, routing methods study how to choose among alternative models or retrieval paths \citep{Ong2025RouteLLM}, and corrective RAG methods study how to critique or repair retrieved evidence after retrieval has occurred \citep{Yan2024CorrectiveRAG}. These directions are complementary, but they typically treat routing, branch selection, and answer verification as separate stages. What remains missing is a unified mechanism that keeps the routing signal computationally executable beyond the initial decision step. Such a mechanism should not treat router confidence as a local diagnostic that disappears after path selection. Instead, it should preserve the router's distributional output as a reusable signal for deciding which branches to execute and how to compare the resulting candidate answers.
+
+To bridge this gap, we propose PURE, a Posterior-Preserving Uncertainty-Aware Routing framework for multimodal RAG. PURE treats the router output as a posterior surrogate and reuses this signal as an operational prior during branch-budget-aware selection and posterior-coupled answer verification. This goes beyond simple top-$k$ softmax expansion: branch retention is governed by evidential concentration and budgeted utility rather than raw probability alone. The framework integrates three components. First, a VIB-regularized evidential router estimates both action preference and evidential strength over retrieval actions. Second, a Dirichlet-concentration selector converts this evidence profile into a branch-budget-aware selection rule, allowing the system to preserve likely useful alternatives without blindly broadcasting to all paths. Third, a posterior-coupled verifier uses branch weights, answer agreement, conflict, evidence availability, and invalid-answer signals to select the final answer when executed branches disagree. In this way, PURE makes routing uncertainty executable across the retrieval-to-generation pipeline rather than consuming it at the initial router.
+
+The main contributions of this work are summarized as follows:
+
+\begin{itemize}
+\item \textbf{Posterior-preserving retrieval-action routing.} We formulate multimodal RAG routing over a four-action interface consisting of no retrieval, paragraph-level text retrieval, document-level text retrieval, and image-based retrieval, and treat the routing output as a posterior surrogate that remains available after the initial routing step.
+
+\item \textbf{Uncertainty-aware branch-budget selection.} We introduce a Dirichlet-concentration selection mechanism that converts evidential routing signals into an executable branch-ranking rule under a fixed normalized branch-budget preference, enabling selective preservation of uncertain but potentially useful retrieval paths.
+
+\item \textbf{Posterior-coupled answer verification.} We reuse posterior branch weights as verifier-side operational priors and combine them with answer agreement, conflict, evidence availability, and invalid-answer signals to resolve disagreement among candidate answers under unreliable or heterogeneous evidence.
+\end{itemize}
+
+Under a shared retriever set, generator, executable-action interface, and evaluation protocol, PURE demonstrates consistent superiority on retrieval-sensitive benchmarks. In the primary T5-large setting, PURE improves Natural Questions F1 from 49.46 to 57.64, HotpotQA F1 from 41.87 to 46.12, and WebQA ROUGE-L from 41.45 to 43.42 over the strongest reproduced non-PURE baselines. In zero-shot out-of-domain evaluation, PURE further improves TriviaQA F1 from 76.25 to 83.23.
+
+Beyond these answer-quality gains, comprehensive analyses across routing diagnostics, branch-budget behavior, qualitative cases, and component-level comparisons indicate that the improvements cannot be explained by naive multi-branch execution alone. Taken together, these findings support the central conclusion that routing uncertainty is most useful when preserved as an operational posterior signal across branch-budget-aware selection and posterior-coupled verification, thereby preventing its premature collapse during the initial routing stage.
+
+The remainder of this paper is organized as follows. Section~\ref{sec:related-work} reviews related work in multimodal RAG routing, uncertainty estimation, and evidence fusion. Section~\ref{sec:methodology} presents the PURE framework, including evidential routing, branch-budget-aware selection, and posterior-coupled verification. Section~\ref{sec:experiments} reports experiments on five in-domain and four out-of-domain benchmarks, together with routing diagnostics, budget analysis, qualitative cases, and ablation studies. Section~\ref{sec:limitations} discusses limitations and future work, and Section~\ref{sec:conclusion} concludes the paper.
+
+\section{Related Work}\label{sec:related-work}
+
+Our work is situated at the intersection of dynamic retrieval routing, uncertainty estimation, and robust generation in multimodal RAG systems. 
+Many existing paradigms improve individual pipeline components, but still treat query routing, confidence estimation, and evidence fusion as separate operations. 
+We review three relevant lines of work: \textbf{Multimodal Routing} (\S~\ref{subsec:multimodal-routing}), \textbf{Uncertainty Estimation for Branch-Budget-Aware Retrieval} (\S~\ref{subsec:uncertainty_budget_aware_retrieval}), and \textbf{Posterior-Coupled Evidence Fusion and Verification} (\S~\ref{subsec:posterior_fusion_verification}).
+
+\subsection{Multimodal Routing}
+\label{subsec:multimodal-routing}
+RAG improves the factual grounding of language and vision-language models by conditioning generation on external evidence rather than relying solely on parametric memory \citep{Lewis2020RAG,Karpukhin2020Dense,Izacard2021Leveraging,Gao2023Citations}. 
+Recent retriever-generator adaptation methods such as RA-DIT further show that both the language model and retriever can be tuned to improve the use and retrieval of external evidence \citep{Lin2024RADIT}.
+In multimodal settings, however, retrieval is no longer a single homogeneous operation. 
+A system must decide whether external evidence is needed at all, and if so, which available evidence source should support the query, such as paragraph-level text, independently indexed document-level text, or image-based evidence \citep{Chang2022WebQA,Marino2019OKVQA,Yeo2026UniversalRAG}. 
+Universal multimodal retrievers such as UniIR also demonstrate the value of instruction-guided retrieval across heterogeneous query and candidate modalities \citep{Wei2024UniIR}.
+This creates a routing problem: before generation, a query must be mapped to one or more retrieval actions based on available evidence sources and task requirements.
+
+One family of methods formulates retrieval control as selective retrieval or deterministic action prediction. 
+Adaptive-RAG estimates query complexity and maps queries to different retrieval policies, while Self-RAG learns reflection signals that decide when retrieval is needed during generation \citep{Jeong2024AdaptiveRAG,Asai2023SelfRAG}. 
+Other routing systems map queries to retrieval actions or paths from a fixed action set, including no-retrieval, text retrieval, document retrieval, or modality-specific retrieval paths \citep{Mallen2023Trust,Yeo2026UniversalRAG}. 
+These routers typically execute the selected policy or path after the routing decision, with objectives centered on decision accuracy, budget use, or generation utility.
+Broader work on model routing and cascaded inference under explicit cost constraints, including FrugalGPT and RouteLLM, similarly treats path selection as a constrained decision, but typically operates over model choices rather than retrieval actions \citep{Chen2024FrugalGPT,Ong2025RouteLLM}. These model-routing studies motivate cost-aware decision making, but they operate at a different layer from retrieval-action routing, which is the focus of PURE.
+A second family broadens or repairs the evidence set through ensemble-style retrieval, multi-path retrieval, or corrective retrieval. 
+REPLUG treats retrieved passages as an ensemble for black-box language-model prediction, and corrective RAG variants can expand or repair the evidence set after an initial retrieval assessment \citep{Shi2024REPLUG,Yan2024CorrectiveRAG}. 
+Studies of RAG benchmarking and long-context behavior further highlight that aggregating heterogeneous or lengthy evidence can complicate generation and verification \citep{Chen2024Benchmarking,Liu2024LostMiddle}. 
+Together, such retrieval-broadening methods improve retrieval coverage, but their routing or evaluation scores are not systematically propagated as unified posterior-like uncertainty signals for budgeted branch selection and downstream candidate weighting.
+
+PURE differs from both families by treating routing scores as uncertainty-bearing signals that can be reused after routing and applying branch-budget-aware selection before optional multi-path verification.
+
+\subsection{Uncertainty Estimation for Branch-Budget-Aware Retrieval}
+\label{subsec:uncertainty_budget_aware_retrieval}
+As retrieval-augmented systems become more expensive to run, recent work has increasingly studied selective or on-demand retrieval, where retrieval is invoked only when it is expected to improve generation quality \citep{Jiang2023FLARE,Asai2023SelfRAG,Mallen2023Trust}. 
+While the previous subsection focuses on which retrieval action is selected, this line of work asks how reliable the selection signal is and whether uncertainty can guide branch-budget-aware downstream decisions.
+A central requirement for such routing is reliable uncertainty estimation: the system must estimate not only which retrieval path is likely to be useful, but also how reliable that routing decision is. 
+In branch-budget-aware retrieval, this reliability estimate is not merely a calibration diagnostic; it determines whether the system should spend additional normalized branch budget or rely on lower-budget evidence paths under a fixed preference encoding.
+Work on model self-knowledge further uses confidence scores, generation probabilities, or self-evaluation prompts to assess whether a model can recognize the limits of its own knowledge \citep{Yin2023Know}. 
+However, neural models are known to be poorly calibrated, and softmax probabilities may remain overconfident under distribution shift, which is often associated with epistemic uncertainty, or under ambiguous inputs, which induce aleatoric uncertainty \citep{Guo2017Calibration,Zhao2021Calibrate,Kendall2017Uncertainties}. 
+For retrieval routing, this miscalibration is particularly problematic: an overconfident router may skip retrieval when external evidence is needed, or invoke an unnecessary retrieval path when the model already has sufficient parametric knowledge \citep{Mallen2023Trust}.
+
+Post-hoc calibration methods such as temperature scaling \citep{Guo2017Calibration} can improve the reliability of softmax confidences, but calibrated softmax scores still lack an independent concentration or evidence-strength parameter; action preference and evidential support, which loosely correspond to aleatoric ambiguity over actions and epistemic uncertainty about the decision, therefore remain entangled when routing uncertainty must inform downstream branch selection and verification.
+
+To obtain richer uncertainty signals, prior work has explored evidential learning and Dirichlet-based uncertainty estimation. 
+Evidential Deep Learning parameterizes class-level evidence as a Dirichlet distribution, allowing a model to represent both prediction preference and evidence strength, including a concentration signal related to epistemic uncertainty, rather than a single deterministic confidence score \citep{Sensoy2018Evidential,Malinin2018PriorNetworks}. 
+In parallel, the Variational Information Bottleneck (VIB) provides a principled way to learn compact latent representations by regularizing the information flow from input to task prediction \citep{Alemi2017DeepVIB,Mahabadi2021VIBFineTuning}. 
+VIB has been used both as a general representation-compression objective and as a robust fine-tuning mechanism, suggesting a route from compact latent modeling to more stable routing decisions. 
+Prototype-based metric learning has similarly been used to impose geometric structure on latent representations \citep{Snell2017Prototypical}. 
+These ideas have been widely studied in classification, uncertainty estimation, and robust representation learning, but their integration into the retrieval routing layer of multimodal RAG remains largely unexplored.
+
+PURE builds on these established primitives by deploying them at the retrieval-action routing layer, where VIB shapes the query representation, prototype geometry structures the action space, and Dirichlet evidence turns routing uncertainty into branch-budget-aware retrieval decisions.
+
+\subsection{Posterior-Coupled Evidence Fusion and Verification}
+\label{subsec:posterior_fusion_verification}
+Even after retrieval paths have been selected, a multimodal RAG system must synthesize retrieved evidence or candidate answers into a coherent and factually grounded response. 
+Early evidence fusion methods often rely on context concatenation or Fusion-in-Decoder architectures, leaving the generator or decoder to aggregate information from top-ranked retrieved contexts without explicitly modeling whether those contexts are weak, redundant, or mutually conflicting \citep{Izacard2021Leveraging,Lewis2020RAG}. 
+Recent ranking and fusion methods further refine this stage, with RankRAG unifying context ranking and answer generation \citep{Yue2024RankRAG}.
+However, when evidence is drawn from multiple retrieval paths, it may be noisy, partially relevant, redundant, or inconsistent. 
+In such cases, generative models may be distracted by irrelevant retrieved contexts or fail to identify salient information in long inputs \citep{Shi2023Distracted,Liu2024LostMiddle}. 
+As a result, uncalibrated fusion can amplify uncertainty and factual errors in generated answers \citep{Kuhn2023Semantic,Ren2025FactualBoundary}. These challenges are compounded in multimodal RAG, where verification must also account for modality-specific evidence availability, image-text disagreement, and cross-modal conflict \citep{Chen2024Benchmarking,Yeo2026UniversalRAG}.
+
+To mitigate these risks, recent work has explored post-hoc verification, retrieval critique, and corrective generation mechanisms \citep{Yan2024CorrectiveRAG,Asai2023SelfRAG,Madaan2023SelfRefine}. 
+Self-RAG learns reflection or critique signals to judge whether generated content is supported by retrieved evidence, Corrective RAG uses a retrieval evaluator to assess evidence quality and trigger corrective retrieval, and Self-Refine-style methods iteratively critique and revise generated answers \citep{Asai2023SelfRAG,Yan2024CorrectiveRAG,Madaan2023SelfRefine}. 
+These methods share a critique-oriented spirit, but they often treat verification as a downstream stage that is largely decoupled from the uncertainty of the retrieval decision. 
+Consequently, in systems without explicit uncertainty-aware routing, a high-confidence targeted retrieval and a low-confidence exploratory retrieval may be integrated under similar fusion criteria, even though they reflect different levels of routing reliability.
+
+PURE extends this line of research from a posterior-preserving perspective. Rather than treating verification as an isolated post-retrieval module or assuming that all executed branches should be compared under a uniform prior, PURE starts from the premise that downstream evidence fusion should remain sensitive to the uncertainty of the initial routing decision. This perspective is particularly important in multimodal settings, where evidence reliability can vary across modalities, retrieval granularities, and candidate sources. Accordingly, our goal is not merely to append another post-hoc verification step, but to keep this uncertainty available beyond the initial decision step as a reusable signal for more reliable evidence selection and candidate comparison.
+
+\section{Methodology: The PURE Framework}\label{sec:methodology}
+PURE consists of three linked stages: VIB-regularized evidential representation (Section~\ref{subsec:vib_evidential_router}), Dirichlet-concentration branch-budget-aware selection (Section~\ref{subsec:dirichlet_concentration_selection}), and posterior-weighted verification (Section~\ref{subsec:posterior_verification}). 
+Figure~\ref{fig:pure_framework_overview} summarizes the pipeline, Section~\ref{subsec:theoretical_properties} states selector sanity properties under explicit alignment assumptions, and Section~\ref{subsec:training_inference} details training and inference.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Figure_02.png}
+    \caption{Overview of the PURE framework. The query is encoded into a VIB-regularized evidential representation, transformed into a routing posterior surrogate over retrieval actions, and then used for branch-budget-aware selection and posterior-weighted answer verification.}
+    \label{fig:pure_framework_overview}
+\end{figure*}
+
+\subsection{Problem Formulation and Framework Overview}
+\label{subsec:problem_overview}
+
+\paragraph{Problem Formulation.}
+We formulate multimodal RAG routing as a branch-budget-aware routing-surrogate decision problem. 
+Given a query $q$ and its ground-truth answer $y^*$, the system selects one retrieval action from
+\begin{equation}
+\label{eq:action_space}
+\mathcal{A}=\{a_{\mathrm{none}},a_{\mathrm{para}},a_{\mathrm{doc}},a_{\mathrm{img}}\}.
+\end{equation}
+These actions correspond to answering without external retrieval, retrieving paragraph-level text, retrieving document-level text, and retrieving image-based evidence, respectively. The action space is a general routing interface; whether two actions access distinct evidence stores is benchmark-dependent, and Section~\ref{subsec:experimental_setup} identifies cases where paragraph and document actions are evidence-equivalent. 
+Let $\mathcal{E}(a,q)$ denote the evidence obtained under action $a$, where $\mathcal{E}(a_{\mathrm{none}},q)=\emptyset$, and let $c(a)$ denote a normalized branch-budget score for that action. This score is a fixed preference-budget encoding rather than a measured latency claim; deployments with calibrated latency, token, or monetary measurements could replace it with those measurements.
+The generator $\mathcal{G}$ produces an answer conditioned on $q$ and $\mathcal{E}(a,q)$. 
+An ideal policy should improve answer quality while avoiding unnecessary retrieval, yielding the oracle objective
+\begin{equation}
+\label{eq:global_objective}
+\max_{\pi}
+\mathbb{E}_{(q,y^*)\sim\mathcal{D}}
+\left[
+\mathbb{E}_{a\sim\pi(a\mid q)}
+\left[
+\mathcal{V}\big(P_{\mathcal{G}}(y^* \mid q,\mathcal{E}(a,q))\big)
+-
+\beta c(a)
+\right]
+\right],
+\end{equation}
+where $\pi(a\mid q)$ is the routing policy, $\mathcal{V}(\cdot)$ is a task-dependent reward function measuring answer quality, and $\beta$ controls the trade-off between generation quality and the branch-budget score. 
+Since the true answer reward is unavailable before retrieval and generation, PURE uses a tractable routing-surrogate score distribution: it estimates a pre-execution action preference, applies the fixed normalized branch-budget score, and reuses selected branch weights when more than one candidate path is evaluated. 
+The supervised routing label provides the benchmark-action target for this pre-execution decision, while posterior verification can revise branch preference using candidate evidence and answer consistency.
+
+\paragraph{Framework Overview.}
+PURE instantiates this formulation through three stages. The router estimates action preference and evidential strength, the selector converts evidential strength into budget sensitivity, and the verifier treats branch weights as weak priors when candidate answers disagree.
+\begin{enumerate}
+    \item \textbf{VIB-Regularized Evidential Representation (Section~\ref{subsec:vib_evidential_router}):} the router maps each query to a compact latent representation and Dirichlet evidence over retrieval actions.
+
+    \item \textbf{Dirichlet-Concentration Branch-Budget-Aware Selection (Section~\ref{subsec:dirichlet_concentration_selection}):} evidential and optional base-router signals are converted into a Dirichlet concentration surrogate, then ranked with a fixed branch-budget penalty.
+
+    \item \textbf{Posterior-Weighted Evidential Verification (Section~\ref{subsec:posterior_verification}):} when multiple branches are executed, normalized posterior branch weights are combined with answer-level agreement, conflict, evidence availability, and invalid-answer signals.
+\end{enumerate}
+The key design principle is to keep the routing-surrogate distribution available as a decision signal until final answer selection, while the following subsections define the router, selector, verifier, and properties of the surrogate selector.
+
+
+\paragraph{Notation and terminology.}
+Throughout the methodology, a \emph{posterior surrogate} refers to a normalized action-weight vector used as an operational prior for retrieval selection and verification. We use $\boldsymbol{\alpha}^v$ for the VIB-router Dirichlet parameters and $\boldsymbol{\alpha}$ for the selector-level Dirichlet concentration surrogate. The evidence preactivation is denoted by $\xi_a(q)$, while $\eta_a^\star(q)$ and $\tilde{\eta}_a(q)$ in Section~\ref{subsec:theoretical_properties} denote the latent utility posterior and the benchmark-action posterior, respectively.
+
+\subsection{VIB-Regularized Evidential Representation}
+\label{subsec:vib_evidential_router}
+
+To realize a posterior-preserving retrieval routing, the system must produce an operational signal that transcends a terminal classification decision. This requires a query representation that is compact and robust, an action space that is structured to distinguish heterogeneous retrieval modes, and an uncertainty estimate that disentangles action preference from evidence strength. To systematically address these requirements, PURE integrates Variational Information Bottleneck (VIB), prototype-based metric learning, and Dirichlet evidential uncertainty modeling \citep{Alemi2017DeepVIB,Snell2017Prototypical,Sensoy2018Evidential,Malinin2018PriorNetworks} as a unified, posterior-ready architecture. Within this design, VIB regularizes the latent query representation, prototype geometry enforces semantic separation among retrieval-action modes, and the evidential head parameterizes Dirichlet distributions to produce action-wise evidence strength for downstream selection. Crucially, this design preserves the router's output as a continuous, reusable posterior-surrogate signal, rather than allowing it to be prematurely collapsed into a single point estimate. Figure~\ref{fig:vib_evidential_router} summarizes this architecture.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Figure_03.png}
+    \caption{Architecture of the VIB-regularized evidential router. The module compresses multimodal query features into a compact latent representation, shapes the latent space with retrieval-action prototypes, and produces Dirichlet evidence for uncertainty-aware retrieval routing.}
+    \label{fig:vib_evidential_router}
+\end{figure*}
+
+\paragraph{Stochastic Query Compression.}
+Given a query $q$, represented by text tokens and, when available, visual or reference-image tokens, a query backbone encoder $F_{\psi}$ produces contextual states $H_q=F_{\psi}(q)$. PURE obtains a unified query representation $h_q$ by masked mean pooling over $H_q$ with mask $m_q$. The router then parameterizes a VIB posterior over a compact latent variable:
+\begin{equation}
+\label{eq:vib_encoder}
+\begin{aligned}
+\mu_q&=W_{\mu}h_q+b_{\mu},\\
+\log\sigma_q^2&=\operatorname{clip}(W_{\sigma}h_q+b_{\sigma}),\\
+q_{\phi}(z\mid q)&=\mathcal{N}(\mu_q,\operatorname{diag}(\sigma_q^2)).
+\end{aligned}
+\end{equation}
+During training, $z$ is sampled by reparameterization; during inference, PURE uses the posterior mean $\mu_q$ for deterministic routing. A KL penalty $D_{\mathrm{KL}}(q_{\phi}(z\mid q)\,\|\,\mathcal{N}(0,I))$ regularizes the latent prototype and evidential branch. Operational routing uncertainty at inference is represented primarily by the Dirichlet evidence strength in Eq.~\eqref{eq:evidential_strength_mean_uncertainty}; the classifier-logit path in Eq.~\eqref{eq:router_logits} is therefore not a strict bottleneck over every output path.
+
+\paragraph{Prototype geometry.}
+Inspired by prototype-based metric learning \citep{Snell2017Prototypical}, the router maintains one learnable prototype $p_a\in\mathbb{R}^{d_z}$ for each retrieval action $a\in\mathcal{A}$. After normalization, the latent vector and prototypes are compared by cosine geometry:
+\begin{equation}
+\label{eq:prototype_geometry}
+s_a(z)=
+\left\langle
+\frac{z}{\|z\|_2},
+\frac{p_a}{\|p_a\|_2}
+\right\rangle.
+\end{equation}
+We define $d_a(z)=1-s_a(z)$ inline and add the prototype score to the classifier logit from the backbone representation:
+\begin{equation}
+\label{eq:router_logits}
+\begin{aligned}
+\boldsymbol{\ell}^{\mathrm{cls}}
+&= W_c\,\mathrm{ReLU}(W_h h_q+b_h)+b_c,\\
+\ell_a
+&= \ell^{\mathrm{cls}}_a+\kappa_p\,\frac{s_a(z)}{\tau_p}.
+\end{aligned}
+\end{equation}
+The classifier branch provides a discriminative optimization anchor, while the prototype term shapes geometric separation among retrieval modes; $\kappa_p$ and $\tau_p$ control the scale and sharpness of this geometric contribution. This internal classifier is distinct from the optional external base-router prior $p^b(q)$ used later by the selector. When two actions are evidence-equivalent, posterior verification is retained as a corrective stage.
+
+\paragraph{Dirichlet Evidential Output.}
+Following evidential deep learning and Dirichlet uncertainty modeling \citep{Sensoy2018Evidential,Malinin2018PriorNetworks}, the evidential layer converts the latent state and routing logits into non-negative action evidence:
+\begin{equation}
+\label{eq:vib_evidence_output}
+\begin{aligned}
+\xi_a(q)&=g_{\theta}(z)_a+\ell_a,\\
+e_a(q)&=\operatorname{softplus}(\xi_a(q))+\epsilon_0,\\
+\alpha_a^v(q)&=e_a(q)+1.
+\end{aligned}
+\end{equation}
+Here $g_{\theta}$ maps the latent state to action-wise evidence logits, $\epsilon_0$ is a small numerical constant, and the superscript $v$ distinguishes router-level Dirichlet parameters from selector-level concentration parameters. The Dirichlet strength, evidential routing mean, and routing uncertainty are
+\begin{equation}
+\label{eq:evidential_strength_mean_uncertainty}
+S^v(q)=\sum_{a\in\mathcal{A}}\alpha_a^v(q),\quad
+p_a^v(q)=\frac{\alpha_a^v(q)}{S^v(q)},\quad
+u^v(q)=\frac{|\mathcal{A}|}{S^v(q)}.
+\end{equation}
+These quantities separate action preference from evidence strength: $p_a^v(q)$ gives the mean routing preference, while $S^v(q)$ and $u^v(q)$ indicate how concentrated the evidence is. Standard Dirichlet variance behavior is summarized later in Eq.~\eqref{eq:uncertainty_concentration}. Anchoring the evidence preactivation $\xi_a(q)$ on discriminative logits stabilizes training; calibration and evidence behavior are evaluated empirically in Section~\ref{subsec:routing_selection_diagnostics}.
+
+\paragraph{Training Objective.}
+Let $r^*\in\mathcal{A}$ be the supervised routing target and $y_a=\mathbb{I}[a=r^*]$ its one-hot encoding. The label $r^*$ follows the benchmark-level action protocol used in Section~\ref{subsec:experimental_setup}. The router is trained with four terms: cross-entropy over the combined logits $\ell$, the VIB KL penalty, a prototype margin loss,
+\begin{equation}
+\label{eq:prototype_loss}
+\mathcal{L}_{\mathrm{proto}}
+=
+\left[
+m_p+d_{r^*}(z)-\min_{a\ne r^*}d_a(z)
+\right]_+ ,
+\end{equation}
+and an evidential loss,
+\begin{equation}
+\label{eq:evidential_loss}
+\begin{aligned}
+\mathcal{L}_{\mathrm{evi}}
+&=
+\sum_{a\in\mathcal{A}}
+\left(y_a-\frac{\alpha_a^v}{S^v}\right)^2
++
+\sum_{a\in\mathcal{A}}
+\frac{\alpha_a^v(S^v-\alpha_a^v)}
+{(S^v)^2(S^v+1)}\\
+&\quad+
+\lambda_{\mathrm{EDL}}(t)\,
+D_{\mathrm{KL}}
+\left(
+\operatorname{Dir}(\tilde{\boldsymbol{\alpha}}^v)
+\,\|\,
+\operatorname{Dir}(\mathbf{1})
+\right),
+\end{aligned}
+\end{equation}
+where $\tilde{\alpha}_a^v=y_a+(1-y_a)\alpha_a^v$ excludes target-class evidence from the non-target KL penalty. The complete objective is
+\begin{equation}
+\label{eq:vib_router_loss}
+\mathcal{L}_{\mathrm{router}}
+=
+\mathcal{L}_{\mathrm{CE}}(\ell,r^*)
++\lambda_{\mathrm{VIB}}\mathcal{L}_{\mathrm{VIB\text{-}KL}}
++\lambda_{\mathrm{proto}}\mathcal{L}_{\mathrm{proto}}
++\lambda_{\mathrm{evi}}\mathcal{L}_{\mathrm{evi}}.
+\end{equation}
+This objective produces a compact representation and a posterior-ready evidence profile for the routing protocol. Evidence concentration and calibration are reported in the routing diagnostics (Section~\ref{subsec:routing_selection_diagnostics}, Table~\ref{tab:routing_diagnostics}).
+
+\subsection{Dirichlet-Concentration Branch-Budget-Aware Selection}
+\label{subsec:dirichlet_concentration_selection}
+
+The evidential router produces both an action-preference distribution and evidence-strength signals, including $\boldsymbol{\alpha}^v(q)$, $\mathbf{p}^v(q)$, accumulated evidence mass $M^v(q)$, and uncertainty $u^v(q)$. These quantities should not be used as a simple top-$k$ softmax expansion, because branch-budget-aware routing must decide not only which evidence actions are likely to be useful, but also whether the routing preference is reliable enough to justify the cost of executing additional branches. This section converts the VIB-derived evidential quantities, together with an optional base-router prior, into an executable branch-budget-aware posterior-surrogate policy. The core selector is the linear utility rule in Eq.~\eqref{eq:branch_budget_utility}; the uncertainty gate and concentration scaling are implementation stabilizers that control how sharply routing preference is injected into that rule. Figure~\ref{fig:pure_concentration_policy} details the uncertainty gate, Dirichlet concentration surrogate construction, utility evaluation, and posterior-weighted execution path.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Figure_04.png}
+    \caption{Detailed posterior-surrogate decision mechanism of PURE. VIB evidential outputs and an optional base-router prior are fused through an uncertainty gate, converted into a Dirichlet concentration surrogate over retrieval actions, evaluated with retrieval-specific branch-budget penalties, and then executed as either a single-path retrieval policy or posterior-weighted multi-path verification.}
+    \label{fig:pure_concentration_policy}
+\end{figure*}
+
+\paragraph{Uncertainty-Gated Hybrid Prior.}
+For a query $q$, the VIB-regularized evidential router produces an evidential routing distribution $\mathbf{p}^v(q)$ over the action space $\mathcal{A}$. In practical deployments, an optional lightweight base router may also provide a probability vector $\mathbf{p}^b(q)$ over the same action set. Rather than treating the two signals as competing classifiers, PURE uses the evidential uncertainty $u^v(q)$ to determine how much the posterior construction should rely on the evidential router. Specifically, let $u^v(q)$ be the uncertainty defined in Section~\ref{subsec:vib_evidential_router}, and let $u_{\mathrm{low}}<u_{\mathrm{high}}$ denote the lower and upper bounds of the uncertainty transition region. The uncertainty gate is defined as
+\begin{equation}
+\label{eq:uncertainty_gate}
+\gamma(q)=
+\begin{cases}
+\gamma_{\mathrm{high}}, & u^v(q)\le u_{\mathrm{low}},\\[4pt]
+\gamma_{\mathrm{low}}, & u^v(q)\ge u_{\mathrm{high}},\\[4pt]
+\gamma_{\mathrm{low}}+
+\Delta_u(q)\,(\gamma_{\mathrm{high}}-\gamma_{\mathrm{low}}),
+& \mathrm{otherwise},
+\end{cases}
+\end{equation}
+where $0\le \gamma_{\mathrm{low}}\le \gamma_{\mathrm{high}}\le 1$ and $\Delta_u(q)=\frac{u_{\mathrm{high}}-u^v(q)}{u_{\mathrm{high}}-u_{\mathrm{low}}}$ denotes the normalized uncertainty proximity. The fused routing distribution is then
+\begin{equation}
+\label{eq:hybrid_distribution}
+\tilde{\mathbf{p}}(q)
+=
+\gamma(q)\mathbf{p}^v(q)
++
+\big(1-\gamma(q)\big)\mathbf{p}^b(q).
+\end{equation}
+For reproducibility, all reported experiments use the fixed transition bounds
+\[
+u_{\mathrm{low}}=0.35,\quad
+u_{\mathrm{high}}=0.75,\quad
+\gamma_{\mathrm{low}}=0.25,\quad
+\gamma_{\mathrm{high}}=0.85 .
+\]
+These values define a broad linear transition over the Dirichlet uncertainty range $u^v(q)\in(0,1]$: evidence-rich cases rely mostly on the evidential router, while weak-evidence cases retain a nonzero contribution from the optional base prior. 
+They are fixed globally as operating-point constants across datasets, backbones, and benchmarks. 
+When no base router is used, PURE simply sets $\tilde{\mathbf{p}}(q)=\mathbf{p}^v(q)$, which is equivalent to $\gamma(q)=1$. In this setting $\gamma_{\mathrm{low}}$ and $\gamma_{\mathrm{high}}$ are inactive for hybrid fusion, while the uncertainty bounds remain active in the concentration scaling below. Thus, the base router acts only as an optional stabilizing prior: it receives more weight when the evidential router admits high uncertainty, and less weight when the router evidence is strong.
+
+\paragraph{Adaptive Dirichlet Concentration.}
+The fused distribution $\tilde{\mathbf{p}}(q)$ specifies the direction of action preference, but it does not indicate how strongly that preference should affect a budgeted top-$m$ decision. PURE therefore treats concentration as an uncertainty-dependent shrinkage control: high evidence and low uncertainty preserve a sharper preference vector, while weak evidence or high uncertainty shrink the selector-level mean toward its prior so that the budget-score term can exert more influence on candidate-set composition. From the VIB-derived Dirichlet parameters, PURE uses the accumulated evidential mass $M^v(q)=\sum_{a\in\mathcal{A}}e_a(q)=\sum_a\max(\alpha_a^v(q)-1,0)$ as an implementation-level pseudo-count mass; under the softplus evidence head, this reduces to $S^v(q)-|\mathcal{A}|$. We use $M^v(q)$ only to scale posterior concentration, not to decide which action is preferred. We then map the evidential mass and uncertainty into bounded scale factors:
+\begin{equation}
+\label{eq:concentration_scales}
+\begin{aligned}
+s_e(q)
+&=
+s_{\min}
++
+\frac{M^v(q)}
+{M^v(q)+\kappa_e}
+\left(s_{\max}-s_{\min}\right),\\
+s_u(q)
+&=
+s_{\min}
++
+\left(
+1-
+\operatorname{clip}
+\left(
+\frac{u^v(q)-u_{\mathrm{low}}}
+{u_{\mathrm{high}}-u_{\mathrm{low}}},
+0,1
+\right)
+\right)\\
+&\quad\times
+\left(s_{\max}-s_{\min}\right),
+\end{aligned}
+\end{equation}
+where $s_{\min}$ and $s_{\max}$ bound the concentration scale, and $\kappa_e$ controls the saturation rate of the evidence-mass term. 
+In all reported experiments we fix $s_{\min}=0.5$, $s_{\max}=2.0$, and $\kappa_e=|\mathcal{A}|=4$. 
+Let $\bar{s}(q)$ denote the average of the available scale factors. The effective concentration is computed as
+\begin{equation}
+\label{eq:effective_tau}
+\begin{aligned}
+\tau_{\mathrm{eff}}(q)
+&=
+\tau\cdot
+\operatorname{clip}
+\Big(
+s_{\min}
++
+\gamma(q)\big(\bar{s}(q)-s_{\min}\big),\\
+&\hspace{6.2em}
+s_{\min},
+s_{\max}
+\Big).
+\end{aligned}
+\end{equation}
+The base concentration is fixed to $\tau=|\mathcal{A}|=4$ and the default prior below uses $\alpha_{\mathrm{prior}}=1.0$. 
+Intuitively, $\tau_{\mathrm{eff}}(q)$ controls how strongly the fused routing distribution is injected into the posterior surrogate. With the default uniform prior, larger $\tau_{\mathrm{eff}}(q)$ keeps $\boldsymbol{\theta}(q)$ closer to $\tilde{\mathbf{p}}(q)$, whereas smaller $\tau_{\mathrm{eff}}(q)$ shrinks it toward a flatter prior. This shrinkage makes the budget-score penalty more consequential when the router has weak evidence. The selector and verifier constants are bounded, monotone, and globally fixed across benchmarks.
+
+\paragraph{Concentration rule.}
+
+PURE constructs a Dirichlet concentration surrogate over retrieval actions as
+\begin{equation}
+\label{eq:dirichlet_concentration_alpha}
+\begin{aligned}
+\boldsymbol{\alpha}(q)
+&= \boldsymbol{\alpha}_0
++ \tau_{\mathrm{eff}}(q)\,\tilde{\mathbf{p}}(q),\\[4pt]
+\theta_a(q)
+&= \frac{\alpha_a(q)}
+{\sum_{b\in\mathcal{A}}\alpha_b(q)}.
+\end{aligned}
+\end{equation}
+Here $\boldsymbol{\alpha}_0$ is a Laplace smoothing prior over retrieval actions. By default, we use a uniform prior $\boldsymbol{\alpha}_0=\alpha_{\mathrm{prior}}\mathbf{1}$ with $\alpha_{\mathrm{prior}}=1.0$. When a validation-estimated action prior is used for a benchmark suite, it is fixed before testing and affects only the concentration baseline; it does not override the per-query utility ranking, force a fixed action, or change the number of executed branches. By keeping both the posterior-surrogate mean $\boldsymbol{\theta}(q)$ and concentration-derived uncertainty $u^B(q)=|\mathcal{A}|/\sum_a\alpha_a(q)$, PURE separates action preference from concentration strength.
+
+\paragraph{Decision-Theoretic Utility Surrogate.}
+We now make the connection between the oracle objective in Eq.~\eqref{eq:global_objective} and the executable utility rule explicit. 
+For a fixed query, define the unobserved unregularized answer-quality value of action $a$ as
+\begin{equation}
+\label{eq:latent_action_value}
+Q_a(q)
+=
+\mathbb{E}
+\left[
+\mathcal{V}\big(P_{\mathcal{G}}(y^* \mid q,\mathcal{E}(a,q))\big)
+\mid q,a
+\right].
+\end{equation}
+The oracle in Eq.~\eqref{eq:global_objective} would select an action from the vector $\{Q_a(q)\}_{a\in\mathcal{A}}$, but this vector is unavailable before executing retrieval and generation. 
+PURE therefore introduces the latent quality-optimal retrieval action
+\begin{equation}
+\label{eq:latent_best_action}
+A^*(q)
+=
+\arg\max_{a\in\mathcal{A}} Q_a(q),
+\end{equation}
+When multiple actions achieve near-identical quality, such as paragraph and document retrieval on passage-level benchmarks, any utility-equivalent maximizing action can serve as the oracle target; the experiments adopt text-equivalent accounting for such cases.
+During router training, the supervised action $r^*$ follows the benchmark-level protocol described in Section~\ref{subsec:experimental_setup}. The posterior-surrogate mean $\theta_a(q)$ is trained to estimate $P(r^*=a\mid q,\mathcal{D}_r)$, where $\mathcal{D}_r$ denotes the routing training data, and supplies a pre-retrieval action prior for branch selection. Posterior-weighted verification then compares executed branch outputs and can select a lower-prior candidate when its evidence and answer agreement are stronger. 
+Under a 0-1-style branch-selection loss with additive budget penalty, the executable pre-retrieval decision is optimized through a benchmark-action surrogate rather than through direct posterior risk over $A^*(q)$. This surrogate risk is defined over the benchmark-action posterior, and its connection to the latent utility-optimal action depends on the alignment term analyzed in Section~\ref{subsec:theoretical_properties}. Specifically,
+\begin{equation}
+\label{eq:surrogate_risk}
+\mathbb{E}\big[L(a,r^*)\mid q,\mathcal{D}_r\big]
+=
+1-\theta_a(q)+\beta c_a .
+\end{equation}
+Minimizing this benchmark-action surrogate risk is therefore equivalent to maximizing $\theta_a(q)-\beta c_a$. 
+Thus the linear rule below is the risk-minimizing action of this pre-retrieval benchmark-action surrogate. The term $\theta_a(q)$ carries routing-surrogate belief about the useful action, while $\beta c_a$ carries the same form of budget penalty as the oracle objective. 
+If a deployment can estimate calibrated downstream rewards $Q_a(q)$ directly, the same decision form can replace $\theta_a(q)$ with those reward estimates.
+
+Accordingly, PURE compares retrieval actions under a branch-budget-aware utility:
+\begin{equation}
+\label{eq:branch_budget_utility}
+R_a(q)
+=
+\theta_a(q)-\beta c_a,
+\quad
+\hat{a}
+=
+\arg\max_{a\in\mathcal{A}}R_a(q).
+\end{equation}
+Here $c_a\in[0,1]$ encodes the branch-budget preference ordering with a fixed spacing; in the experiments, $c=(0,0.25,0.45,0.60)$ orders no retrieval, paragraph retrieval, document retrieval, and image retrieval. The coefficient $\beta$ controls global tolerance to this budget score, and Avg.~Budget reports relative branch budget under the fixed encoding. Deployments with measured latency, token, or monetary costs can replace this preference score with those measurements.
+
+\paragraph{Posterior Branch Weights for Verification.}
+When multi-path evaluation is enabled, PURE keeps the posterior-surrogate mass assigned to selected branches as verifier priors. Before top-$m$ selection, it applies the executable-action projection $\Pi_t$ from Section~\ref{subsec:training_inference}. Unavailable actions are mapped to executable actions, merged masses are summed and renormalized, and duplicates are not executed. If projection leaves only one executable branch, posterior verification degenerates to single-candidate selection. For compact notation, $\mathcal{A}$, $\theta_a(q)$, and $R_a(q)$ below refer to the post-projection executable action set whenever task-specific masking is active. PURE selects top-$m$ branches and assigns normalized posterior branch weights as
+\begin{equation}
+\label{eq:top_m_branches}
+\begin{aligned}
+\mathcal{B}_m(q)
+&=
+\operatorname{Top}\text{-}m_{a\in\mathcal{A}} R_a(q),\\
+w_b^{\theta}
+&=
+\frac{\theta_b(q)}
+{\sum_{k\in\mathcal{B}_m(q)}\theta_k(q)},
+\quad b\in\mathcal{B}_m(q).
+\end{aligned}
+\end{equation}
+These branch-level priors guide verifier comparison. The branch-budget term affects which branches are executed; after execution, the verifier compares candidates using posterior belief, agreement, conflict, and evidence status.
+
+
+
+\subsection{Selector Sanity Properties}
+\label{subsec:theoretical_properties}
+
+The selector above is a posterior surrogate for the inaccessible oracle objective in Eq.~\eqref{eq:global_objective}. The statements in this subsection state sanity properties of the implemented utility rule under explicit alignment and budget-preference assumptions.
+
+Fix a query $q$. Let $\eta_a^\star(q)=P(A^*(q)=a\mid q,\mathcal{D}_r)$ denote the ideal calibrated posterior over the latent quality-optimal retrieval action, and let $\tilde{\eta}_a(q)=P(r^*=a\mid q,\mathcal{D}_r)$ denote the posterior induced by observed benchmark-action labels. The gap between these two quantities is the alignment term in the perturbation bound below. Let $c_a^\star$ be the target branch-budget preference on the same normalized scale as $c_a$, and define $V_a^\star(q)=\eta_a^\star(q)-\beta c_a^\star$ with target maximizer $a_\beta^\star(q)=\arg\max_a V_a^\star(q)$. When $\beta=0$, or when the budget term does not change the maximizer, $a_\beta^\star(q)$ is exactly the quality-optimal retrieval action.
+
+\paragraph{Property 1.}
+Under the branch-selection surrogate described above, the risk-minimizing action is exactly the utility rule in Eq.~\eqref{eq:branch_budget_utility}. This follows directly from Eq.~\eqref{eq:surrogate_risk}, because the conditional risk is $1-\theta_a(q)+\beta c_a$ and the constant term is independent of $a$. Thus Eq.~\eqref{eq:branch_budget_utility} is the minimizer of the chosen linear surrogate loss.
+
+\paragraph{Property 2: one-step perturbation.}
+For any fixed query $q$, define the one-step regret of the PURE action $\hat{a}$ relative to the target branch-budget-regularized utility as $\operatorname{Reg}_\beta(q)=V_{a_\beta^\star}^\star(q)-V_{\hat{a}}^\star(q)$. Let
+\begin{equation}
+\label{eq:estimation_alignment_and_cost_error}
+\begin{aligned}
+\epsilon_{\mathrm{est}}(q)
+&=\max_a\left|\theta_a(q)-\tilde{\eta}_a(q)\right|,\\
+\xi_{\mathrm{align}}(q)
+&=\max_a\left|\tilde{\eta}_a(q)-\eta_a^\star(q)\right|,\\
+\delta_c
+&=\max_a\left|c_a-c_a^\star\right|.
+\end{aligned}
+\end{equation}
+Then
+\begin{equation}
+\label{eq:single_step_regret_bound}
+\begin{aligned}
+\operatorname{Reg}_\beta(q)
+&\le
+2\epsilon_{\mathrm{est}}(q)
++2\xi_{\mathrm{align}}(q)\\
+&\quad +2\beta\delta_c.
+\end{aligned}
+\end{equation}
+The first term measures how well the learned selector matches the benchmark-action posterior, the second term measures benchmark-action alignment relative to the latent utility-optimal action, and the third term measures branch-budget scale alignment. The bound is deterministic and query-wise, and separates estimation, supervision, and budget-scale contributions.
+
+To see this, the selected action maximizes $\widehat{V}_a(q)=\theta_a(q)-\beta c_a$, so $\widehat{V}_{\hat{a}}(q)\ge\widehat{V}_{a_\beta^\star}(q)$. Therefore,
+\begin{equation}
+\label{eq:regret_decomposition}
+\begin{aligned}
+\operatorname{Reg}_\beta(q)
+&\le
+2\max_a\left|
+\widehat{V}_a(q)-V_a^\star(q)
+\right| \\
+&\le
+2\max_a\left|
+\theta_a(q)-\eta_a^\star(q)
+\right| \\
+&\quad +2\beta\delta_c \\
+&\le
+2\epsilon_{\mathrm{est}}(q)
++2\xi_{\mathrm{align}}(q) \\
+&\quad +2\beta\delta_c .
+\end{aligned}
+\end{equation}
+This decomposition identifies the terms that control the gap between the implemented selector and the target utility.
+
+\paragraph{Consistency remark.}
+If a sequence of selectors satisfies $\max_a|\theta_a^{(n)}(q)-\eta_a^\star(q)|+\beta\max_a|c_a^{(n)}-c_a^\star|\xrightarrow{p}0$ and the target utility $V_a^\star(q)$ has a unique maximizer separated by a positive margin, then the selected action converges in probability to the target branch-budget-regularized maximizer. This margin condition states the selector behavior expected when approximation and budget-scale errors vanish around a separated maximizer.
+
+\paragraph{Property 3: standard Dirichlet concentration identity.}
+Let $K=|\mathcal{A}|$ and $S^B(q)=\sum_a\alpha_a(q)$ be the posterior strength in Eq.~\eqref{eq:dirichlet_concentration_alpha}. Then
+\begin{equation}
+\label{eq:uncertainty_concentration}
+\begin{aligned}
+u^B(q)
+&=\frac{K}{S^B(q)},\\
+\operatorname{Var}[\Theta_a\mid q]
+&=
+\frac{\alpha_a(q)\big(S^B(q)-\alpha_a(q)\big)}
+{(S^B(q))^2(S^B(q)+1)}\\
+&\le \frac{1}{4(S^B(q)+1)}.
+\end{aligned}
+\end{equation}
+Thus the scalar posterior uncertainty and each action-wise Dirichlet variance shrink at rate $O(1/S^B(q))$ as effective concentration increases, matching the standard Dirichlet variance behavior used to guide concentration scaling.
+
+\subsection{Posterior-Weighted Evidential Verification}
+\label{subsec:posterior_verification}
+
+Branch-budget-aware selection determines which retrieval actions are executed, but it does not by itself resolve disagreement among the resulting candidate answers. In multimodal RAG, different branches may return incomplete, conflicting, or unevenly reliable evidence, and treating all executed branches as equally trustworthy would discard the uncertainty information preserved by the selector. Building on post-hoc verification and retrieval-critique ideas \citep{Asai2023SelfRAG,Yan2024CorrectiveRAG,Madaan2023SelfRefine}, PURE therefore performs posterior-weighted evidential verification, using selected branch weights as operational priors when comparing candidate answers together with answer agreement, evidence availability, and refusal-risk signals. Figure~\ref{fig:pure_posterior_verification} illustrates this stage.
+
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Figure_05.png}
+    \caption{Posterior-weighted evidential verification in PURE. Active retrieval branches produce candidate answers that inherit posterior branch weights from the selector. PURE canonicalizes candidate answers, aggregates posterior agreement and conflict signals, incorporates evidence status and invalid-answer penalties, and selects the final answer with a risk-aware verification score.}
+    \label{fig:pure_posterior_verification}
+\end{figure*}
+
+\paragraph{Posterior Predictive View.}
+
+For the active branch set $\mathcal{B}_m(q)$ from Eq.~\eqref{eq:top_m_branches}, each branch $b$ retrieves $\mathcal{E}_b=\mathcal{E}(b,q)$ and generates $y_b=\mathcal{G}(q,\mathcal{E}_b)$. Ideally, final prediction would marginalize over latent retrieval actions as a posterior-weighted mixture of branch-conditioned generator distributions. In practice, the generator returns only a finite set of candidate answers rather than a full answer distribution, so PURE uses a deterministic posterior predictive surrogate that scores each generated candidate by how much posterior mass supports it and how much posterior mass contradicts it.
+
+\paragraph{Candidate Canonicalization and Evidence Status.}
+Let $\mathcal{C}(q)=\{(b_i,w_i,y_i,\mathcal{E}_i)\}_{i=1}^{m}$ denote the candidate set. To compare answers across branches, PURE maps each raw answer into a target-aware canonical form $\bar{y}_i=\chi_t(y_i)$, where $\chi_t(\cdot)$ extracts the answer option for multiple-choice tasks and applies task-standard normalization for open-domain tasks. For open-domain QA, this normalization lowercases text, strips punctuation and articles, normalizes whitespace, and applies exact-answer normalization rather than general semantic equivalence matching. Thus paraphrastic answers can still be treated as conflicts unless the optional LLM verifier is enabled. This step prevents simple formatting differences from being treated as semantic disagreement while keeping the deterministic verifier reproducible. PURE also records two branch-level status variables:
+\begin{equation}
+\label{eq:evidence_status}
+\begin{aligned}
+I_i
+&=\mathbb{I}\big[b_i=a_{\mathrm{none}} \ \vee\ |\mathcal{E}_i|>0\big],\\
+Z_i
+&=\mathbb{I}\big[\bar{y}_i=\emptyset\big].
+\end{aligned}
+\end{equation}
+Here $I_i$ indicates whether the branch has usable evidence, while $Z_i$ marks empty or unparsable answers. For direct-answer robustness, PURE further identifies refusal-like responses such as unsupported ``cannot determine'' outputs. With $n_j\in\{0,1\}$ denoting the non-answer detector, the refusal penalty and merged invalid-answer indicator are
+\begin{equation}
+\label{eq:non_answer_penalty}
+\begin{aligned}
+D
+&=\mathbb{I}[\exists j:\bar{y}_j\ne\emptyset \wedge \neg n_j],\\
+N_i
+&=D\cdot n_i,\\
+Q_i
+&=\max(Z_i,N_i).
+\end{aligned}
+\end{equation}
+This design is important in multimodal retrieval: an image branch may have high routing probability but return an off-topic image, while a lower-weight text or no-retrieval branch may still provide a direct and supported answer.
+
+\paragraph{Verifier details.}
+For reproducibility, multiple-choice targets extract a candidate letter, short-answer targets use normalized exact-answer text, and longer-form targets retain a normalized sentence string. The non-answer detector is a deterministic phrase matcher for empty outputs and refusal-like responses such as \texttt{cannot determine}, \texttt{not visible}, or \texttt{not enough information}. The evidence indicator $I_i$ records availability rather than relevance, which is handled indirectly by answer conflict, non-answer penalties, and the optional LLM verifier. When enabled, the LLM verifier receives candidates with posterior weights, agreement/conflict masses, non-answer flags, risk scores, and truncated evidence previews; invalid outputs fall back to Eq.~\eqref{eq:posterior_final_selection}.
+
+\paragraph{Posterior Agreement and Conflict Mass.}
+For each candidate $i$, PURE computes the posterior mass assigned to branches that agree with its canonical answer and the posterior mass assigned to conflicting answers:
+\begin{equation}
+\label{eq:posterior_agreement_conflict}
+\begin{aligned}
+A_i
+&=
+\sum_{j=1}^{m}
+w_j\,
+\mathbb{I}\big[
+\bar{y}_i\ne\emptyset
+\wedge
+\bar{y}_j=\bar{y}_i
+\big],\\
+K_i
+&=
+\sum_{j=1}^{m}
+w_j\,
+\mathbb{I}\big[
+\bar{y}_i\ne\emptyset
+\wedge
+\bar{y}_j\ne\emptyset
+\wedge
+\bar{y}_j\ne\bar{y}_i
+\big].
+\end{aligned}
+\end{equation}
+The agreement mass $A_i$ approximates how much posterior probability supports the same answer, while the conflict mass $K_i$ measures posterior risk from competing answers. Unlike majority voting, this computation is sensitive to the confidence of the retrieval decision: agreement among low-posterior exploratory branches is not treated the same as agreement among high-posterior branches.
+
+\paragraph{Candidate scoring.}
+PURE treats candidate verification as a deterministic log-linear posterior-style update. Each candidate receives an unnormalized log potential
+\begin{equation}
+\label{eq:posterior_verification_score}
+\begin{aligned}
+S_i
+&=\log \tilde{P}_i \\
+&=
+A_i
+-\rho K_i
++\lambda_w w_i
++\eta I_i\\
+&\quad
+-\nu_Z Z_i
+-\nu_N N_i,\\
+\tilde{P}_i
+&\propto\exp(S_i).
+\end{aligned}
+\end{equation}
+This fixed log-linear score combines posterior-style support terms and risk penalties. The agreement mass $A_i$, branch prior $w_i$, and evidence availability $I_i$ act as positive log-potentials for candidate support, while conflict mass $K_i$, empty outputs $Z_i$, and refusal-like non-answers $N_i$ act as negative log-likelihood penalties. The score is scale-normalized by the posterior agreement term, so $A_i$ has unit weight. The remaining coefficients have direct monotone roles: $\rho$ penalizes posterior-supported conflicts, $\lambda_w$ gives a small reward to the branch prior, $\eta$ rewards branches with usable evidence or valid no-retrieval status, $\nu_Z$ penalizes empty or unparsable answers, and $\nu_N$ penalizes refusal-like non-answers when another direct candidate exists. Although $A_i$ includes the candidate branch mass when a candidate agrees with itself, it measures answer-level posterior support after canonicalization. The separate $\lambda_w w_i$ term stabilizes cases with no cross-branch consensus or weak agreement ties. In all reported deterministic posterior-score rows and LLM-verifier fallback paths, we use the compact fixed preset $(\rho,\lambda_w,\eta,\nu_Z,\nu_N)=(0.35,0.15,0.05,1.00,0.85)$, kept global across all in-domain and OOD benchmarks. Component ablations in Section~\ref{subsec:ablation_studies} evaluate the contribution of the verification stage. PURE then selects
+\begin{equation}
+\label{eq:posterior_final_selection}
+i^*
+=
+\arg\max_i
+\big(S_i,w_i,-i\big),
+\quad
+\hat{y}=y_{i^*}.
+\end{equation}
+Tie-breaking favors larger branch weight and then earlier candidates, making inference deterministic. For multiple-choice tasks, PURE returns the canonical option extracted from $y_{i^*}$; for open-domain tasks, it returns the original generated answer from the selected branch. If all canonical answers are empty, the system falls back to posterior-weighted voting over the available responses.
+
+\paragraph{Optional LLM-Based Verifier.}
+The deterministic score in Eq.~\eqref{eq:posterior_verification_score} is the default posterior verification signal. When the optional LLM verifier is enabled, PURE supplies the verifier with the candidate answers, posterior branch weights, agreement and conflict masses, non-answer penalties, and evidence previews. The verifier is explicitly instructed that posterior weight is a branch prior, so it can override a high-weight branch when its evidence is off-topic or its response is a refusal while another branch provides a supported direct answer. For constrained tasks such as multiple-choice QA, the verifier output is restricted to candidate-supported options. If the verifier fails to produce a valid answer, PURE reverts to the deterministic posterior score in Eq.~\eqref{eq:posterior_final_selection}.
+
+This closes the decision loop: verification can revise branch priors using candidate-level evidence, answer consistency, and invalid-answer signals while keeping the routing posterior as an operational prior.
+
+\subsection{Training and Inference Procedure}
+\label{subsec:training_inference}
+
+The preceding sections define the router, selector, and verifier. PURE trains router parameters from benchmark-action labels and then uses the resulting posterior surrogate to control retrieval and verification at inference time; it does not require reinforcement or gradient feedback from final answer reward.
+
+\paragraph{Router Training.}
+Let $\mathcal{D}_{r}=\{(q_n,r_n^*)\}_{n=1}^{N}$ denote the routing training set, where $r_n^*\in\mathcal{A}$ is the task-aligned benchmark-action label. The trainable parameters include the query backbone, VIB heads, classifier head, prototype vectors, and evidential head. PURE optimizes
+\begin{equation}
+\label{eq:training_empirical_risk}
+\min_{\Omega}
+\frac{1}{N}
+\sum_{n=1}^{N}
+\mathcal{L}_{\mathrm{router}}(q_n,r_n^*;\Omega),
+\end{equation}
+where $\mathcal{L}_{\mathrm{router}}$ is defined in Eq.~\eqref{eq:vib_router_loss}. In implementation, this loss is optimized with mini-batch AdamW~\citep{Loshchilov2019AdamW}, learning-rate warm-up and decay, gradient clipping, and optional mixed precision; class weighting or label smoothing can be enabled for imbalanced routing labels. This separation keeps router training generator-agnostic; during inference, the verifier compares the executed alternatives using candidate-level evidence and answer consistency.
+
+\begin{center}
+\refstepcounter{algorithm}\label{alg:pure_inference}
+\fbox{\begin{minipage}{0.92\columnwidth}
+\footnotesize
+\noindent\textbf{Algorithm~\thealgorithm: PURE Inference}\par\vspace{0.25em}
+\begin{tabbing}
+\qquad \= \qquad \= \kill
+\textbf{Input:} $q$, $\mathcal{A}$, $c$, $\beta$, branch count $m$ \\
+\textbf{Output:} predicted answer $\hat{y}$ \\[2pt]
+1.\enspace \> Encode $q$ and set $z=\mu_q$ \\
+2.\enspace \> Infer $\boldsymbol{\alpha}^v(q)$, $\mathbf{p}^v(q)$, and $u^v(q)$ \\
+3.\enspace \> Build $\boldsymbol{\alpha}(q)$ by Eq.~\eqref{eq:dirichlet_concentration_alpha} \\
+4.\enspace \> Compute $\boldsymbol{\theta}(q)$ and project with $\Pi_t$ \\
+5.\enspace \> Rank by $R_a=\theta_a-\beta c_a$ \\
+6.\enspace \> Select the executable top-$m$ branches \\
+7.\enspace \> \textbf{for} each selected branch $b$ \textbf{do} \\
+8.\enspace \> \qquad Retrieve $\mathcal{E}_b$ and generate $y_b$ \\
+9.\enspace \> \textbf{end for} \\
+10.\enspace \> Canonicalize candidates \\
+11.\enspace \> Compute agreement/conflict masses \\
+12.\enspace \> Score by Eq.~\eqref{eq:posterior_verification_score} \\
+13.\enspace \> \textbf{return} $\hat{y}=y_{i^*}$ by Eq.~\eqref{eq:posterior_final_selection}
+\end{tabbing}
+\end{minipage}}
+\end{center}
+
+\paragraph{Inference.}
+Algorithm~\ref{alg:pure_inference} summarizes the deterministic inference path used in all reported evaluations. PURE uses the VIB posterior mean $\mu_q$ and the selector-level posterior mean $\boldsymbol{\theta}(q)$ for reproducibility. For task $t$, the executable-action projection $\Pi_t:\mathcal{A}\rightarrow\mathcal{A}_t$ maps unavailable actions to executable retrievers, sums posterior masses that map to the same retriever, renormalizes the executable distribution, and prevents duplicate execution. The primary in-domain rows apply the same posterior top-$2$ verification policy across benchmarks, including MMLU, while task-specific projection handles unavailable or duplicate executable actions.
+
+\paragraph{Computational Behavior.}
+Router-side uncertainty modeling is lightweight at inference because PURE uses the posterior mean and the selector operates over four retrieval actions. The dominant cost is downstream retrieval, generation, and optional LLM verification. The main comparison reports the accuracy-oriented two-branch operating point together with hard top-$2$ verifier controls, and normalized branch budget is reported separately (Section~\ref{subsec:cost_quality_tradeoff}, Table~\ref{tab:cost_budget_analysis}).
+
+% Numbered list
+% Use the style of numbering in square brackets.
+% If nothing is used, default style will be taken.
+%\begin{enumerate}[a)]
+%\item 
+%\item 
+%\item 
+%\end{enumerate}  
+
+% Unnumbered list
+%\begin{itemize}
+%\item 
+%\item 
+%\item 
+%\end{itemize}  
+
+% Description list
+%\begin{description}
+%\item[]
+%\item[] 
+%\item[] 
+%\end{description}  
+
+\section{Experiments}
+\label{sec:experiments}
+
+We conduct experiments to evaluate whether PURE improves multi-action retrieval-augmented QA from both effectiveness and decision-quality perspectives. The primary in-domain answer-quality comparison reports all five held-out in-domain benchmarks: MMLU, SQuAD, Natural Questions, HotpotQA, and WebQA. For HotpotQA, we construct the text retrieval index from raw HotpotQA context passages and encode them with BGE \citep{Xiao2024CPack}. For WebQA, we construct the image retrieval index from WebQA image captions and encode them with BGE.
+
+The following sections describe the experimental setup, main results, routing and selection diagnostics, preference-budget and real-cost diagnostics, qualitative case studies, and ablation studies.
+
+
+\subsection{Experimental Setup}
+\label{subsec:experimental_setup}
+
+We evaluate PURE on five in-domain benchmarks, MMLU \citep{Hendrycks2021MMLU}, SQuAD \citep{Rajpurkar2016SQuAD}, Natural Questions \citep{Kwiatkowski2019NaturalQuestions}, HotpotQA \citep{Yang2018HotpotQA}, and WebQA \citep{Chang2022WebQA}, and four OOD benchmarks, TriviaQA \citep{Joshi2017TriviaQA}, TruthfulQA \citep{Lin2022TruthfulQA}, LaRA~\citep{Li2025LaRA}\footnote{LaRA is used from the official benchmark release at \texttt{https://github.com/Alibaba-NLP/LaRA}, accessed June 2025. The test set contains 2{,}326 examples across four QA task categories: location, comparison, reasoning, and hallucination detection, with context lengths of 32k and 128k tokens spanning novels, academic papers, and financial statements.}, and Visual-RAG~\citep{Wu2025VisualRAG}\footnote{Visual-RAG is used from the official benchmark release at \texttt{https://github.com/LuciusLan/Visual-RAG}, accessed June 2025. The benchmark contains 400 text-only queries over a knowledge base of 103{,}824 organism images from iNaturalist 2021, emphasizing fine-grained visual knowledge extraction from retrieved clue images.}. The in-domain test split contains 8,400 examples: 1,750 each from MMLU, SQuAD, Natural Questions, and HotpotQA, plus 1,400 from WebQA; the remaining in-domain data are split into 2,160 training and 1,440 development examples. The training split fits supervised routers and the VIB-regularized evidential router, while the development split is used once to select backbone-level router regularization values; posterior verification uses the fixed preset in Section~\ref{subsec:posterior_verification}, and the budget vector is kept global rather than re-estimated per dataset. All experiments use the four-action interface in Section~\ref{subsec:problem_overview}: no retrieval, paragraph retrieval, document retrieval, and image retrieval. HotpotQA is the only in-domain benchmark with an independent document-level text store, while SQuAD and Natural Questions treat paragraph and document actions as evidence-equivalent passage retrieval. We retain both actions in the unified routing interface for consistency across benchmarks, but interpret these results mainly as robustness checks under action-space degeneracy rather than as evidence of distinct paragraph-document routing benefits. HotpotQA context passages and WebQA image captions are encoded with BGE~\citep{Xiao2024CPack}. Image retrieval is masked or mapped to an executable text-oriented action on datasets without image-caption evidence, following Section~\ref{subsec:training_inference}; text-only generators evaluate image branches through retrieved captions.
+
+Supervised routing labels are constructed from benchmark-level metadata: MMLU $\rightarrow a_{\mathrm{none}}$, SQuAD and Natural Questions $\rightarrow a_{\mathrm{para}}$, HotpotQA $\rightarrow a_{\mathrm{doc}}$, and WebQA $\rightarrow a_{\mathrm{img}}$. These labels define a coarse task-intent action space and remain fixed across retriever, generator, and verifier variants, so routing accuracy is interpreted as proxy-label alignment rather than instance-level oracle utility. PURE is compared with fixed retrieval policies, UniversalRAG-style multimodal routing~\citep{Yeo2026UniversalRAG}, Adaptive-RAG~\citep{Jeong2024AdaptiveRAG}, Self-RAG~\citep{Asai2023SelfRAG}, CRAG-style evidence gating~\citep{Yan2024CorrectiveRAG}, and hard top-$2$ verifier controls under the same executable-action interface. We do not include model-routing systems such as FrugalGPT~\citep{Chen2024FrugalGPT} or RouteLLM~\citep{Ong2025RouteLLM} as direct baselines because they address a different routing layer: their primary objective is to route queries among alternative LLMs or commercial API calls under cost constraints, whereas PURE keeps the generator fixed and routes uncertainty over heterogeneous retrieval actions and external knowledge sources under a shared executable-action interface. Because Adaptive-RAG and Self-RAG have different native decision spaces, we preserve their original decision procedures and map only their outputs: Adaptive-RAG maps A/B/C to no retrieval, paragraph retrieval, and document retrieval, while Self-RAG maps no-retrieve/retrieve to no retrieval or the target text-retrieval action. CRAG-style uses BGE retrieval similarity as a checkpoint-free evidence gate instead of the official learned CRAG evaluator.
+
+Final answer quality is measured with task-specific metrics: accuracy for MMLU, EM/F1 for SQuAD, Natural Questions, and HotpotQA, and ROUGE-L with raw BERTScore \citep{Zhang2020BERTScore} for WebQA. Routing and selection diagnostics include top-1 routing accuracy, macro-F1, ECE, Brier score, error-detection AUROC, candidate recall, posterior selection accuracy, multi-path rate, and Avg. Budget. Routing diagnostics are reported as single-run scores, and all primary answer-quality comparisons are reported using the same held-out test split, retriever stores, generator configuration, and scoring scripts. The evidential routers use DistilBERT~\citep{Sanh2019DistilBERT} and T5-Large~\citep{Raffel2020T5} backbones with VIB and evidential-uncertainty components following prior work~\citep{Alemi2017DeepVIB,Sensoy2018Evidential,Malinin2018PriorNetworks}, trained with Eq.~\eqref{eq:vib_router_loss}; unless stated otherwise, each executed text branch retrieves top-$1$ evidence, primary multi-path inference executes the top-$2$ branches, and PURE uses $c=(0,0.25,0.45,0.60)$ with $\beta=0.1$. The remaining selector constants are the global values specified in Section~\ref{subsec:dirichlet_concentration_selection}; all selector constants are fixed a priori and shared across benchmarks, backbones, and generators. The main tables use Qwen3.6-Plus \citep{Yang2025Qwen3TechnicalReport}\footnote{Qwen3.6-Plus denotes the Alibaba Cloud API model identifier used in these experiments; because proprietary serving snapshots may not correspond one-to-one to an archival paper, we cite the public Qwen3 technical report for the model family and report the exact API identifier for reproducibility.}, with GPT-4o \citep{OpenAI2024GPT4oSystemCard} and GLM-4V \citep{GLM2024ChatGLM} reported as cross-generator sensitivity checks in Section~\ref{subsec:main_results}.
+
+
+\subsection{Main Results}
+\label{subsec:main_results}
+
+
+\paragraph{In-domain answer quality.}
+Table~\ref{tab:main_indomain_results} summarizes primary in-domain answer quality with the Qwen3.6-Plus generator over all five held-out benchmarks. Figure~\ref{fig:indomain_quality_cost_tradeoff} further plots the corresponding quality--budget diagnostic view using the benchmark-specific primary metric and normalized Avg. Budget for each method. The table focuses on retrieval and routing policies. HotpotQA uses the raw-context BGE text feature index, and WebQA uses BGE-caption image retrieval. On the in-domain test split, BGE retrieval recalls 84.86\% of annotated HotpotQA supporting documents at top-1, and BGE-caption image retrieval reaches Hit@1/5/10 of 63.36/84.21/89.57 on WebQA. PURE-T5-large is the primary high-capacity variant and PURE-DistilBERT is reported as a compact-backbone sensitivity check; both use the same posterior top-$2$ verification policy. Table~\ref{tab:main_indomain_results} reports answer quality only; the corresponding branch-budget behavior of the main routing policies is reported separately in Table~\ref{tab:cost_budget_analysis} to avoid conflating task metrics with deployment-budget diagnostics.
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\caption{Primary in-domain answer-quality results with the Qwen3.6-Plus generator. Scores are percentages. MMLU reports accuracy; SQuAD, Natural Questions, and HotpotQA report EM/F1; WebQA reports ROUGE-L/raw BERTScore. PURE-T5-large is the primary high-capacity variant, and PURE-DistilBERT is reported as a compact-backbone sensitivity check. Branch budget is reported separately in Panel A of Table~\ref{tab:cost_budget_analysis}.}
+\label{tab:main_indomain_results}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrrrrrr@{}}
+\toprule
+Method & MMLU & \multicolumn{2}{c}{SQuAD} & \multicolumn{2}{c}{NQ} & \multicolumn{2}{c}{HotpotQA} & \multicolumn{2}{c}{WebQA} \\
+\cmidrule(lr){2-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}
+ & Acc & EM & F1 & EM & F1 & EM & F1 & R-L & BERT \\
+\midrule
+ParagraphRAG & 86.06 & 13.89 & 19.60 & 35.60 & 47.09 & 12.69 & 19.00 & 39.72 & 90.05 \\
+DocumentRAG & 74.74 & 13.89 & 19.60 & 35.60 & 47.09 & 32.69 & 43.03 & 37.27 & 89.38 \\
+\midrule
+Hard-DistilBERT & 88.63 & 13.84 & 19.53 & 35.60 & 47.16 & 31.71 & 41.62 & 41.33 & 90.79 \\
+Hard-T5-large & 87.94 & 13.78 & 19.40 & 35.71 & 47.28 & 32.23 & 42.13 & 41.33 & 90.83 \\
+Hard top-2 & 88.63 & 14.01 & 19.74 & 35.71 & 47.34 & 31.37 & 41.28 & 41.45 & 90.83 \\
+Hard top-2 + Ver. (DistilBERT) & 88.57 & 13.89 & 19.60 & 37.60 & 49.44 & 31.43 & 41.33 & 41.43 & 90.82 \\
+Hard top-2 + Ver. (T5-large) & 88.57 & 14.58 & 20.77 & 37.60 & 49.46 & 31.94 & 41.87 & 41.43 & 90.85 \\
+\midrule
+UniversalRAG-DistilBERT & 88.40 & 13.84 & 19.44 & 35.54 & 47.21 & 31.20 & 41.29 & 41.11 & 90.82 \\
+UniversalRAG-T5-large & 88.23 & 13.84 & 19.46 & 35.77 & 47.43 & 31.71 & 41.73 & 41.14 & 90.81 \\
+Adaptive-RAG & 85.94 & 13.84 & 19.47 & 35.60 & 47.06 & 35.06 & 46.03 & 40.91 & 90.77 \\
+Self-RAG & 87.20 & 14.07 & 19.66 & 35.89 & 47.56 & 32.74 & 43.24 & 41.35 & 90.84 \\
+CRAG-style & 86.91 & 17.21 & 23.58 & 36.17 & 48.14 & 33.37 & 43.81 & 41.10 & 90.81 \\
+\midrule
+PURE-DistilBERT & \textbf{88.91} & \textbf{18.01} & \textbf{24.15} & 42.63 & 55.72 & 35.14 & 45.80 & 43.17 & 91.20 \\
+PURE-T5-large & 88.86 & 13.95 & 19.68 & \textbf{44.06} & \textbf{57.64} & \textbf{35.43} & \textbf{46.12} & \textbf{43.42} & \textbf{91.22} \\
+\bottomrule
+\end{tabular*}
+\par\vspace{2pt}
+\begin{minipage}{\textwidth}
+\scriptsize\emph{Note:} All rows use the same held-out in-domain split, retrieval stores, Qwen3.6-Plus generator, and scoring scripts.
+\end{minipage}
+\end{table*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{Figure_07.png}
+    \caption{Quality--budget diagnostic view across in-domain benchmarks. Each point denotes one method evaluated with the benchmark-specific primary metric. Axes are panel-specific and zoomed to the competitive region for readability; marker coordinates use the original raw scores and normalized Avg. Budget values. Lower normalized budget and higher quality indicate a better quality--budget trade-off under the fixed branch-budget encoding.}
+    \label{fig:indomain_quality_cost_tradeoff}
+\end{figure*}
+
+Fixed retrieval and single-path routing are brittle when the required evidence source varies across tasks. Across the PURE family, PURE-DistilBERT is strongest on SQuAD, improving EM/F1 to 18.01/24.15 over the strongest non-PURE baseline of 17.21/23.58, while the primary PURE-T5-large row is strongest on Natural Questions, improving EM/F1 to 44.06/57.64 over 37.60/49.46. Since paragraph and document actions are text-equivalent on these two benchmarks, these gains should be interpreted as robustness checks under action-space degeneracy rather than as direct evidence of distinct paragraph-document routing benefits. On MMLU, the top-$2$ PURE rows reach 88.91 with DistilBERT and 88.86 with T5-large, suggesting that PURE remains stable in a largely no-retrieval-dominated setting. On retrieval-sensitive benchmarks where branch choice changes the available evidence, PURE-T5-large reaches 35.43/46.12 EM/F1 on HotpotQA and 43.42 ROUGE-L on WebQA. Taken together, these benchmark-level differences indicate that PURE yields its clearest benefits when routing decisions materially change the evidence available to the generator, as in HotpotQA and WebQA. By contrast, text-equivalent benchmarks such as SQuAD and Natural Questions, together with no-retrieval-dominated settings such as MMLU, mainly serve as robustness checks under action-space degeneracy and low retrieval necessity.
+
+\paragraph{Out-of-domain transfer.}
+We also evaluate whether these decision mechanisms transfer beyond the in-domain suite. Table~\ref{tab:ood_results} reports OOD performance on TruthfulQA, TriviaQA, LaRA, and Visual-RAG. For PURE, the OOD rows use the same zero-shot configuration for every target: a uniform prior \(\alpha=(1,1,1,1)\), \(\beta=0.1\), and the fixed normalized budget vector \(c=(0,0.25,0.45,0.60)\). Dataset-specific priors encode target-level retrieval preferences, so the main OOD table reports the uniform-prior zero-shot setting. Adaptive-RAG and Self-RAG use the fixed interface mappings from Section~\ref{subsec:experimental_setup}, CRAG-style uses BGE similarity as a checkpoint-free evidence gate, and text-only OOD datasets use the same text-collapsed budget accounting as SQuAD/NQ.
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{OOD results with the Qwen3.6-Plus generator. TruthfulQA uses accuracy, TriviaQA uses EM and F1, and LaRA and Visual-RAG use ROUGE-L and raw BERTScore. Budget is the count-weighted execution budget under the fixed normalized budget vector. Interface-aligned adaptive baselines use the fixed mappings described in Section~\ref{subsec:experimental_setup}.}
+\label{tab:ood_results}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrrrrr@{}}
+\toprule
+Method & TruthfulQA & \multicolumn{2}{c}{TriviaQA} & \multicolumn{2}{c}{LaRA} & \multicolumn{2}{c}{Visual-RAG} & Budget \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+ & Acc & EM & F1 & R-L & BERT & R-L & BERT & \\
+\midrule
+UniversalRAG-DistilBERT & 84.18 & 30.71 & 36.27 & 25.04 & 86.86 & 3.75 & 80.76 & 0.30 \\
+UniversalRAG-T5-large & 82.91 & 36.16 & 41.72 & \textbf{27.10} & \textbf{87.31} & 3.63 & 80.70 & 0.32 \\
+Adaptive-RAG & 84.05 & 62.93 & 70.11 & 26.09 & 86.86 & 4.78 & 80.58 & 0.31 \\
+Self-RAG & 87.59 & 62.93 & 69.86 & 23.82 & 86.60 & 4.69 & 80.57 & 0.25 \\
+CRAG-style (BGE sim.) & 80.76 & 69.74 & 76.25 & 23.15 & 86.61 & 4.73 & 80.56 & 0.28 \\
+PURE-DistilBERT & 86.20 & 76.25 & 83.07 & 25.91 & 87.09 & 8.12 & 81.18 & 0.45 \\
+PURE-T5-large & \textbf{88.35} & \textbf{76.85} & \textbf{83.23} & 25.62 & 86.95 & \textbf{8.52} & \textbf{81.26} & 0.46 \\
+\bottomrule
+\end{tabular*}
+\par\vspace{2pt}
+\begin{minipage}{\textwidth}
+\scriptsize\emph{OOD data sources:} TruthfulQA~\citep{Lin2022TruthfulQA}, TriviaQA~\citep{Joshi2017TriviaQA}, LaRA~\citep{Li2025LaRA}, and Visual-RAG~\citep{Wu2025VisualRAG}.
+\end{minipage}
+\end{table*}
+
+The OOD gains are strongest on text-oriented open-domain transfer such as TriviaQA, while LaRA and Visual-RAG remain more challenging because their evidence formats and visual-grounding requirements are less aligned with the caption-mediated retrieval protocol used in the main evaluation.
+
+\paragraph{Cross-generator sensitivity check.}
+Table~\ref{tab:cross_generator_pure_results} reports in-domain results with GPT-4o and GLM-4V, keeping router outputs, retrieval stores, and scoring scripts fixed. The Primary Avg.\ column averages MMLU accuracy, SQuAD F1, NQ F1, HotpotQA F1, and WebQA ROUGE-L.
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\caption{Cross-generator in-domain sensitivity results for PURE and selected same-generator baselines. Scores are percentages. Primary Avg.\ is computed from MMLU Acc, SQuAD/NQ/HotpotQA F1, and WebQA ROUGE-L. Table~\ref{tab:main_indomain_results} reports the primary controlled comparison.}
+\label{tab:cross_generator_pure_results}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llrrrrrrrrrr@{}}
+\toprule
+Generator & Method & MMLU & \multicolumn{2}{c}{SQuAD} & \multicolumn{2}{c}{NQ} & \multicolumn{2}{c}{HotpotQA} & \multicolumn{2}{c}{WebQA} & Prim. \\
+\cmidrule(lr){1-2}\cmidrule(lr){3-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}\cmidrule(lr){10-11}\cmidrule(lr){12-12}
+ & & Acc & EM & F1 & EM & F1 & EM & F1 & R-L & BERT & Avg. \\
+\midrule
+GPT-4o & Hard-T5-large & 80.17 & 18.81 & 27.11 & 37.94 & 50.27 & 43.60 & 57.17 & 60.84 & 94.21 & 55.11 \\
+GPT-4o & UniversalRAG-T5-large & \textbf{80.29} & 18.81 & 26.87 & 38.17 & 50.71 & 42.11 & 56.03 & 61.01 & 94.24 & 54.98 \\
+GPT-4o & Self-RAG & 79.89 & 19.15 & 27.40 & 38.23 & 50.44 & 43.49 & 57.25 & 53.48 & 92.65 & 53.69 \\
+GPT-4o & PURE-DistilBERT & 80.06 & 19.78 & 28.13 & 41.43 & 54.72 & \textbf{44.00} & 57.83 & 62.33 & 94.48 & 56.61 \\
+GPT-4o & PURE-T5-large & 80.23 & \textbf{20.18} & \textbf{28.51} & \textbf{41.66} & \textbf{55.72} & \textbf{44.00} & \textbf{58.09} & \textbf{62.43} & \textbf{94.51} & \textbf{57.00} \\
+\midrule
+GLM-4V & Hard-T5-large & 76.06 & 12.46 & 16.50 & 32.63 & 41.25 & 19.14 & 26.17 & 39.87 & 89.91 & 39.97 \\
+GLM-4V & UniversalRAG-T5-large & 74.74 & 12.29 & 16.27 & \textbf{32.69} & \textbf{41.29} & 19.66 & 26.84 & 39.78 & 89.91 & 39.78 \\
+GLM-4V & Self-RAG & 75.54 & 12.64 & 16.61 & 32.51 & 41.28 & \textbf{20.00} & 27.33 & 21.88 & 86.82 & 36.53 \\
+GLM-4V & PURE-DistilBERT & \textbf{80.63} & 12.01 & 15.84 & 30.74 & 38.63 & 19.09 & 26.05 & 39.35 & 89.79 & 40.10 \\
+GLM-4V & PURE-T5-large & 80.40 & \textbf{12.75} & \textbf{16.66} & 32.23 & 40.83 & 19.77 & \textbf{27.43} & \textbf{40.83} & \textbf{90.00} & \textbf{41.23} \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+
+Cross-generator evaluation with GPT-4o and GLM-4V yields a similar aggregate trend: PURE-T5-large obtains the highest Primary Avg.\ under both additional generators (57.00 and 41.23, respectively), with aggregate improvements of 1.26--1.89 points over the strongest same-generator non-PURE control. Per-benchmark results remain generator-dependent, but the aggregate trend is consistent across the additional generators.
+
+% Avoid a hard float barrier here; it can force a column break before the ablation subsection.
+
+\subsection{Ablation Studies}
+\label{subsec:ablation_studies}
+
+Table~\ref{tab:ablation_components} studies the contribution of the three main components in PURE: the VIB-regularized evidential router, Dirichlet-concentration branch-budget-aware selection, and posterior answer verification. All ablation variants use the same in-domain benchmark suite, Qwen3.6-Plus generator, retrieval backends, and global normalized budget vector as the main experiments, while varying the routing and selection components indicated in the table. VIB-only executes the single top VIB action, VIB+Ver. executes the top-$2$ VIB actions selected from normalized VIB probabilities, and PURE uses the Dirichlet-concentration selector with posterior weights reused during verification. The Hybrid Hard top-2+Ver. row uses cached hybrid classifier probabilities from the same evaluation pipeline. The SQuAD/NQ columns and Budget follow the conventions defined in Section~\ref{subsec:experimental_setup} and used in Table~\ref{tab:cost_budget_analysis}.
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.0pt}
+\caption[Component ablation]{Component ablation on the in-domain benchmark suite with the Qwen3.6-Plus generator. The answer-metric columns follow Table~\ref{tab:main_indomain_results}: MMLU reports accuracy; SQuAD, Natural Questions, and HotpotQA report EM/F1; and WebQA reports ROUGE-L/raw BERTScore. Dir. denotes the Dirichlet-concentration selection module, VIB denotes the evidential VIB router, and Ver. denotes posterior answer verification. Budget is the count-weighted execution budget under $c=(0,0.25,0.45,0.60)$. HotpotQA entries are reported under the default setting, without HotpotQA-specific fallback or tuned budget values.}
+\label{tab:ablation_components}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccrrrrrrrrrr@{}}
+\toprule
+Backbone & Variant & Dir. & VIB & Ver. & MMLU & \multicolumn{2}{c}{SQuAD} & \multicolumn{2}{c}{NQ} & \multicolumn{2}{c}{HotpotQA} & \multicolumn{2}{c}{WebQA} & Budget \\
+\cmidrule(lr){6-6}\cmidrule(lr){7-8}\cmidrule(lr){9-10}\cmidrule(lr){11-12}\cmidrule(lr){13-14}\cmidrule(lr){15-15}
+ & & & & & Acc & EM & F1 & EM & F1 & EM & F1 & R-L & BERT & \\
+\midrule
+DistilBERT & Hard routing & N & N & N & 88.63 & 13.84 & 19.53 & 35.60 & 47.16 & 31.71 & 41.62 & 41.33 & 90.79 & 0.29 \\
+DistilBERT & VIB-only & N & Y & N & 88.63 & 13.95 & 19.67 & 35.77 & 47.38 & 31.66 & 41.49 & 40.88 & 90.78 & 0.29 \\
+DistilBERT & VIB+Ver. & N & Y & Y & 88.69 & 13.95 & 19.67 & 35.71 & 47.33 & 31.26 & 41.17 & 41.25 & 90.83 & 0.56 \\
+Hybrid & Hard top-2+Ver. & N & N & Y & 88.57 & 13.89 & 19.60 & 37.60 & 49.44 & 31.43 & 41.33 & 41.43 & 90.82 & 0.56 \\
+DistilBERT & PURE & Y & Y & Y & 88.91 & 18.01 & 24.15 & 42.63 & 55.72 & 35.14 & 45.80 & 43.17 & 91.20 & 0.47 \\
+\midrule
+T5-large & Hard routing & N & N & N & 87.94 & 13.78 & 19.40 & 35.71 & 47.28 & 32.23 & 42.13 & 41.33 & 90.83 & 0.30 \\
+T5-large & VIB-only & N & Y & N & 88.74 & 13.89 & 19.60 & 35.60 & 47.09 & 32.57 & 42.47 & 41.25 & 90.81 & 0.30 \\
+T5-large & VIB+Ver. & N & Y & Y & 88.74 & 13.89 & 19.60 & 35.60 & 47.09 & 32.11 & 42.08 & 41.48 & 90.85 & 0.62 \\
+T5-large & Hard top-2+Ver. & N & N & Y & 88.57 & 14.58 & 20.77 & 37.60 & 49.46 & 31.94 & 41.87 & 41.43 & 90.85 & 0.56 \\
+T5-large & PURE & Y & Y & Y & 88.86 & 13.95 & 19.68 & 44.06 & 57.64 & 35.43 & 46.12 & 43.42 & 91.22 & 0.46 \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+The first group of rows compares hard routing with VIB-only routing under single-branch inference. This comparison measures whether the evidential router improves the base retrieval decision before any multi-branch verification is introduced. For T5-large, VIB-only produces small single-branch gains, improving MMLU from 87.94 to 88.74 and HotpotQA from 32.23/42.13 to 32.57/42.47, while keeping Avg. Budget nearly unchanged. For DistilBERT, VIB-only produces small single-branch changes across benchmarks: it slightly improves SQuAD and Natural Questions, leaves MMLU unchanged, and gives slightly lower HotpotQA and WebQA scores. This is consistent with the backbone-dependent calibration pattern observed in Table~\ref{tab:routing_diagnostics}: VIB improves routing accuracy for both backbones, while the smaller DistilBERT router has a higher ECE value.
+
+The verifier rows first distinguish the contribution of the routing model from the contribution of the verification mechanism. Adding verifier reranking to VIB increases branch budget because two branches are executed, but it does not by itself explain the final PURE gains. For example, DistilBERT VIB+Ver. remains close to the VIB-only row on SQuAD and NQ, and it is weaker on HotpotQA and WebQA when the two branches are selected only from normalized VIB probabilities. This indicates that verifier reranking is most useful after the candidate branch set is made reliable.
+
+The gap between these verifier-only rows and PURE isolates the contribution of Dirichlet-concentration weighting and branch-budget-aware selection. For DistilBERT, PURE improves over VIB+Ver.\ on NQ, from 35.71/47.33 to 42.63/55.72. On HotpotQA, it improves from 31.26/41.17 to 35.14/45.80 while selecting a lower normalized branch-budget set (Avg. Budget 0.47 vs.\ 0.56). For T5-large, PURE improves NQ from 35.60/47.09 to 44.06/57.64 and HotpotQA from 32.11/42.08 to 35.43/46.12, also with a lower normalized branch-budget set (Avg. Budget 0.46 vs.\ 0.62). Compared with the Hard top-2+Ver.\ baseline, which uses a hybrid classifier for candidate selection, PURE further improves HotpotQA F1 from 41.87 to 46.12 (T5-large) while operating at a lower normalized branch-budget (Avg. Budget 0.46 vs.\ 0.56), indicating that the unified posterior-surrogate policy selects more useful branches under the fixed budget encoding.
+
+The comparison between VIB+Ver.\ and PURE is the most controlled ablation for the Dirichlet-concentration module: both rows use the same VIB router, the same top-$2$ branch budget, the same verifier, and the same cached branch generations. The only difference is whether branch selection uses normalized VIB probabilities or the Dirichlet-concentration surrogate with a branch-budget utility term. Under this controlled comparison, adding the Dirichlet-concentration surrogate and branch-budget-aware selection gives the clearest gains on NQ, HotpotQA, and WebQA, where branch choice changes the available evidence. The effect is more mixed on SQuAD and MMLU: for example, the T5 PURE row is below Hard top-2+Ver. on SQuAD, and MMLU differences are small. This pattern indicates that Dirichlet-concentration weighting and branch-budget-aware filtering are most beneficial when retrieval actions carry distinct evidence quality and budget profiles.
+
+Overall, PURE's gains are not reducible to any single component or to multi-branch execution alone. Rather, they arise from the interaction of VIB routing, Dirichlet-concentration selection, and posterior verification, with the clearest benefits appearing on retrieval-sensitive benchmarks such as HotpotQA and WebQA.
+
+\subsection{Qualitative Case Analysis}
+\label{subsec:qualitative_case_analysis}
+
+In the primary PURE-T5-large two-branch evaluation, residual low-utility cases are predominantly attributable to retrieval or evidence misses, with generation errors and verifier selection errors accounting for the remainder. Figure~\ref{fig:qualitative_cases} visualizes representative examples, including the executed candidate branches, posterior weights, verifier decisions, and gold answers.
+
+\begin{figure*}[t]
+\centering
+\scriptsize
+\setlength{\fboxsep}{3pt}
+\setlength{\fboxrule}{0.35pt}
+\begin{minipage}[t]{0.49\textwidth}
+\fbox{\begin{minipage}[t]{0.94\linewidth}\raggedright
+\textbf{(a) Positive image routing}\\
+\textbf{Query:} What shapes are painted down the center of Salou Boulevard?\\
+\safequalimage{Figure_08_a.jpg}\\
+\textbf{Candidates:} image $w=0.979$ $\rightarrow$ blue footprints; no retrieval $w=0.021$ $\rightarrow$ palm trees.\\
+\textbf{Verifier:} Candidate 0. \textbf{Gold:} Blue footprints.\\
+\textbf{Takeaway:} retrieved image-caption evidence supports the answer.
+\end{minipage}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\fbox{\begin{minipage}[t]{0.94\linewidth}\raggedright
+\textbf{(b) Text-branch conflict correction}\\
+\textbf{Query:} Which gospel group is associated with the co-writer of "Lost Someone"?\\
+\textbf{Candidates:} document $w=0.869$ $\rightarrow$ The Famous Flames; paragraph $w=0.131$ $\rightarrow$ Gospel Starlighters.\\
+\textbf{Verifier:} Candidate 1. \textbf{Gold:} Gospel Starlighters.\\
+\textbf{Uncertainty:} $u^v(q)=0.509$.\\
+\textbf{Takeaway:} verification can override a high-weight but misleading branch.
+\end{minipage}}
+\end{minipage}
+
+\vspace{0.15em}
+\begin{minipage}[t]{0.49\textwidth}
+\fbox{\begin{minipage}[t]{0.94\linewidth}\raggedright
+\textbf{(c) Misleading image rejection}\\
+\textbf{Query:} What is the ceiling clock in Dijon Halles interieur hung on?\\
+\safequalimage{Figure_08_c.jpg}\\
+\textbf{Candidates:} image $w=0.978$ $\rightarrow$ non-answer from a wrong exterior tower; no retrieval $w=0.022$ $\rightarrow$ iron framework.\\
+\textbf{Verifier:} Candidate 1. \textbf{Gold:} black railing/support structure.\\
+\textbf{Takeaway:} a non-answer penalty exposes mismatched image-caption evidence.
+\end{minipage}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\fbox{\begin{minipage}[t]{0.94\linewidth}\raggedright
+\textbf{(d) Boundary case}\\
+\textbf{Query:} Does a Minnetonka Rhododendron flower have petals in a cup shape?\\
+\safequalimage{Figure_08_d.jpg}\\
+\textbf{Candidates:} image $w=0.979$ $\rightarrow$ yes; no retrieval $w=0.021$ $\rightarrow$ yes.\\
+\textbf{Verifier:} Candidate 0. \textbf{Gold:} no.\\
+\textbf{Takeaway:} verification cannot recover when no candidate contains the correct evidence.
+\end{minipage}}
+\end{minipage}
+\caption[Qualitative cases of posterior-aware routing and verification]{Qualitative cases of posterior-aware routing and verification in PURE. Each panel reports the query, executed candidate branches, normalized posterior branch weights, verifier decision, gold answer, and main observation.}
+\label{fig:qualitative_cases}
+\end{figure*}
+
+These cases illustrate three phenomena observed in the quantitative results. When image-caption evidence is necessary (case a), PURE routes to the image branch with high posterior mass ($w=0.979$) and selects the answer supported by retrieved image-caption evidence over parametric guessing. When branch evidence quality differs (case b), verification can override a high-weight but factually wrong branch: the document branch ($w=0.869$) answers incorrectly while the paragraph branch ($w=0.131$) is correct, and the verifier selects the latter, aided by non-negligible routing uncertainty ($u^v(q)=0.509$) that keeps both candidates available. When retrieved evidence is mismatched (case c), the non-answer penalty exposes that the high-weight image branch ($w=0.978$) retrieved irrelevant image-caption evidence, and the verifier correctly selects the no-retrieval candidate. The boundary case (d) confirms that when no executed candidate contains the correct evidence, posterior verification is constrained by candidate coverage, as expected for all routing policies.
+
+\subsection{Routing and Selection Diagnostics}
+\label{subsec:routing_selection_diagnostics}
+
+Table~\ref{tab:routing_diagnostics} reports router-side metrics on the held-out in-domain test split, computed on all 8,400 in-domain test examples without post-hoc temperature scaling. The VIB and PURE rows reuse the same router estimates; their different Budget values reflect downstream execution policy rather than different router predictions. The VIB router improves top-1 routing accuracy and macro-F1 for both backbones. With DistilBERT, VIB improves top-1 accuracy from 93.92 to 94.88, macro-F1 from 88.62 to 91.02, and Brier score from 0.213 to 0.173, while ECE increases from 5.02 to 8.03. With T5-large, VIB improves both accuracy and calibration, reaching 97.81 top-1 accuracy, 96.05 macro-F1, 3.19 ECE, and 0.071 Brier score. These results indicate that the evidential signal improves routing discrimination, while calibration gains are backbone-dependent.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.4pt}
+\caption{Routing diagnostics: top-1 router-side metrics before verification. ECE and Brier use unscaled classifier confidence for hard routers and unscaled top-route VIB confidence for VIB/PURE rows.}
+\label{tab:routing_diagnostics}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Method & Top-1 Acc. & Macro-F1 & ECE $\downarrow$ & Brier $\downarrow$ & Err.-AUROC & Budget \\
+\midrule
+Hard-DistilBERT & 93.92 & 88.62 & 5.02 & 0.213 & 75.16 & 0.31 \\
+Hard-T5-large & 95.90 & 94.69 & 5.14 & 0.108 & 82.10 & 0.30 \\
+VIB-DistilBERT & 94.88 & 91.02 & 8.03 & 0.173 & 76.87 & 0.30 \\
+VIB-T5-large & 97.81 & 96.05 & 3.19 & 0.071 & 80.52 & 0.30 \\
+PURE-DistilBERT & 94.88 & 91.02 & 8.03 & 0.173 & 76.87 & 0.46 \\
+PURE-T5-large & 97.81 & 96.05 & 3.19 & 0.071 & 80.52 & 0.50 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+We further check the Dirichlet uncertainty signal: sorting examples by evidential uncertainty $u^v(q)$, the bottom quartile reaches 97.95\% routing accuracy for T5-large while the top quartile drops to 94.19\%, confirming that high $u^v(q)$ is associated with a higher routing-error rate. Figure~\ref{fig:routing_uncertainty_quartile} further visualizes this pattern by grouping test examples according to evidential uncertainty quartiles. The lowest-uncertainty quartile achieves the highest routing accuracy for both backbones, indicating that the evidential uncertainty signal is informative for routing reliability, although the trend is not strictly monotonic across all quartiles.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{figs/routing_accuracy_uncertainty_quartile.pdf}
+\caption{Routing accuracy grouped by evidential uncertainty quartiles. The lowest-uncertainty quartile achieves the highest routing accuracy for both DistilBERT and T5-large, while higher-uncertainty groups show lower or less stable routing reliability. This supports the use of evidential uncertainty as an informative signal for downstream branch selection and verification, without assuming a strictly monotonic trend across all quartiles.}
+\label{fig:routing_uncertainty_quartile}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Preference-Budget and Real-Cost Diagnostics}
+\label{subsec:cost_quality_tradeoff}
+
+Figure~\ref{fig:indomain_quality_cost_tradeoff} gives the all-method quality--budget view across the five in-domain benchmarks, while Table~\ref{tab:cost_budget_analysis} consolidates the branch-budget diagnostics behind the PURE operating points. Avg. Budget values are derived from the fixed preference-budget encoding in Section~\ref{subsec:dirichlet_concentration_selection} and provide a common normalized branch-budget scale for comparing policies. Panel A compares single-branch hard routing, hard top-$2$ verification, and the primary PURE top-$2$ policy under the same Qwen3.6-Plus generator using the text-collapsed budget accounting adopted for SQuAD and Natural Questions. Panel B re-scores cached T5-based routing decisions: Top-1 Same and Top-2 Same are measured relative to the default budget setting, while Hard Top-2 Budget re-evaluates fixed hard top-$2$ candidate sets under each displayed budget vector.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\caption{Branch budget analysis. Panel A reports Avg. Budget under the Qwen3.6-Plus generator with text-collapsed accounting for passage-level SQuAD/NQ actions. Panel B reports $\beta$ and preference-budget vector sensitivity for T5-based PURE on the five in-domain benchmarks.}
+\label{tab:cost_budget_analysis}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+\multicolumn{5}{c}{\textbf{Panel A: Branch-budget comparison}} \\
+\midrule
+Backbone & Policy & Branches & Multi.\% & Avg. Budget \\
+\midrule
+DistilBERT & Hard top-1 & 1.00 & 0.00 & 0.29 \\
+DistilBERT & Hard top-2 + Ver. & 2.00 & 100.00 & 0.56 \\
+DistilBERT & PURE top-2 & 2.00 & 100.00 & 0.47 \\
+\midrule
+T5-large & Hard top-1 & 1.00 & 0.00 & 0.30 \\
+T5-large & Hard top-2 + Ver. & 2.00 & 100.00 & 0.56 \\
+T5-large & PURE top-2 & 2.00 & 100.00 & 0.46 \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{5pt}
+
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\multicolumn{6}{c}{\textbf{Panel B: $\beta$ and budget-vector sensitivity (T5-based PURE)}} \\
+\midrule
+Budget vector & $\beta$ & Top-1 Same\% & Top-2 Same\% & PURE Budget & Hard Top-2 Budget \\
+\midrule
+$(0,0.25,0.45,0.60)$ & 0.00 & 100.00 & 58.73 & 0.63 & 0.63 \\
+$(0,0.25,0.45,0.60)$ & 0.10 & 100.00 & 100.00 & 0.50 & 0.63 \\
+$(0,0.25,0.45,0.60)$ & 0.40 & 100.00 & 61.51 & 0.36 & 0.63 \\
+$(0,0.40,0.60,0.85)$ & 0.10 & 100.00 & 99.93 & 0.73 & 0.90 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+Under the HotpotQA and WebQA retrieval-feature protocol, PURE improves over both hard top-1 routing and hard top-2 verification. With T5-large, PURE reaches 35.43/46.12 on HotpotQA; hard top-2 verification obtains 31.94/41.87. On WebQA, the corresponding scores are 43.42/91.22 for PURE and 41.43/90.85 for hard top-2 verification. Notably, hard top-2 verification slightly degrades HotpotQA relative to hard top-1 single-branch routing, 31.94 vs.\ 32.23 EM, echoing the ablation finding that verification without branch-budget-aware posterior-surrogate selection can amplify retrieval noise rather than resolve it. Under the fixed budget-score encoding, PURE reduces normalized branch budget relative to hard top-$2$ verification because the utility ranking deprioritizes low-score, high-budget retrieval paths before posterior verification. Figure~\ref{fig:branch_budget_behavior} visualizes the same budget behavior. PURE top-$2$ keeps the benefit of multi-branch verification while using a lower normalized average budget than hard top-$2$ verification, and increasing \(\beta\) further shifts selection toward lower-budget branch sets. This should be read as preference-budget-aware branch selection under the fixed encoding, not as a reduction in real inference latency. Under the shared SQuAD/NQ text-store constraint, PURE gives the strongest SQuAD result with DistilBERT and the strongest Natural Questions result with T5-large.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/branch_budget_behavior.pdf}
+\caption{Branch-budget behavior under posterior-surrogate selection. Panel (a) compares normalized average branch budget across hard top-1 routing, hard top-2 verification, and PURE top-2 under DistilBERT and T5-large backbones. Panel (b) shows budget sensitivity under different \(\beta\) values using the default budget vector. PURE reduces normalized budget relative to hard top-2 verification through branch-budget-aware posterior-surrogate selection rather than fixed multi-branch execution.}
+\label{fig:branch_budget_behavior}
+\end{figure*}
+
+Finally, Table~\ref{tab:sampled_real_cost} complements the preference-budget analysis with sampled latency and token measurements. Avg. Budget compares retrieval-action budgets under the fixed encoding, while real deployment cost also depends on prompt length, verifier calls, and remote API latency. Multi. denotes the percentage of examples executing more than one distinct branch, and Ver. denotes the percentage invoking the posterior verifier. The sampled PURE-T5 top-$2$ row measures the primary PURE-T5 policy after executable-action projection and duplicate-branch collapse on the 2,500-example real-cost sample; examples with only one distinct executable candidate do not invoke the verifier. Although PURE has lower normalized branch budget than hard top-$2$ verification under the fixed encoding, it spends more prompt tokens and has higher real latency than single-branch routing because it executes more candidate branches and invokes the verifier more often: its mean latency is $4.97$s, compared with $1.44$s for Hard-T5 top-1, a $3.45\times$ slowdown. The sampled PURE-T5 top-$2$ row reaches $8.73$s P95 latency, whereas Hard-T5 top-1 reaches $3.54$s, a $2.47\times$ P95 increase. These measurements quantify the real-cost trade-off of the accuracy-oriented multi-branch operating point. This latency increase should be interpreted as a conservative wall-clock diagnostic under the current controlled evaluation implementation, where candidate branches and verification are executed in a reproducible evaluation pipeline. In production-grade distributed knowledge systems, the selected executable branches are naturally amenable to parallel or asynchronous execution. Since the sampled PURE-T5 policy executes 1.80 distinct branches on average, parallel branch execution can reduce the serial accumulation of retrieval and generation latency, making end-to-end latency closer to the slowest active branch plus the subsequent verification step rather than the sum of all branch calls. This does not remove the additional token usage or verification cost of multi-path reasoning, but it indicates that the latency overhead reported in Table~\ref{tab:sampled_real_cost} reflects a conservative deployment scenario rather than an inherent sequential requirement of the PURE decision rule.
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.4pt}
+\caption{Sampled real-cost diagnostic with Qwen3.6-Plus on the in-domain suite. Each row aggregates the same 500 sampled examples per benchmark, for 2,500 method-example measurements. Latency is wall-clock time per evaluated example in seconds; token counts are API-reported or fallback-estimated averages per example. Budg. uses normalized branch-budget units under $c=(0,0.25,0.45,0.60)$.}
+\label{tab:sampled_real_cost}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrrrrrrr@{}}
+\toprule
+Method & Branches & Multi. & Ver. & Budg. & Mean & Median & P95 & Prompt & Output & Total \\
+ & & \% & \% & Units & Lat. & Lat. & Lat. & Tok. & Tok. & Tok. \\
+\midrule
+No retrieval & 1.00 & 0.00 & 0.00 & 0.00 & 1.58 & 1.03 & 3.47 & 47.7 & 11.4 & 59.1 \\
+UniversalRAG-T5 & 1.00 & 0.00 & 0.00 & 0.31 & 1.95 & 1.08 & 4.42 & 262.1 & 19.5 & 281.6 \\
+Hard-T5 top-1 & 1.00 & 0.00 & 0.00 & 0.31 & 1.44 & 1.04 & 3.54 & 262.1 & 19.6 & 281.7 \\
+Hard-T5 top-2 + Ver. & 1.60 & 60.00 & 38.88 & 0.51 & 2.81 & 2.45 & 5.50 & 638.9 & 27.5 & 666.4 \\
+PURE-T5 top-$2$ (sampled) & 1.80 & 80.00 & 67.92 & 0.45 & 4.97 & 3.65 & 8.73 & 983.7 & 37.6 & 1021.3 \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\section{Limitations and Future Work}\label{sec:limitations}
+
+PURE is evaluated under a controlled but necessarily simplified setting. Its routing supervision is derived from benchmark-level metadata rather than instance-level oracle utilities, so routing accuracy should be interpreted as proxy-label alignment rather than direct utility-optimal action identification. The normalized branch-budget vector provides a fixed preference encoding for policy comparison, but real deployment cost also depends on latency, token usage, verifier calls, and system-level parallelism. In addition, the WebQA image branch is caption-mediated rather than based on native visual indexing, and some generator variants and interface-aligned baselines rely on proprietary APIs or controlled policy-level adaptations. Finally, posterior verification remains constrained by candidate coverage: when all executed branches miss the supporting evidence, the verifier cannot recover the correct answer.
+
+Future work will extend PURE toward more realistic and fine-grained multimodal RAG deployment. Promising directions include replacing fixed normalized branch-budget scores with calibrated latency-, token-, or cost-aware models; adopting native visual or multi-vector retrieval backends beyond caption-mediated image retrieval; expanding the action space to cover retrieval depth, source type, evidence granularity, and verifier invocation; and exploring instance-level utility supervision, training-free router variants, and parallel or asynchronous branch execution.
+
+\section{Conclusion}\label{sec:conclusion}
+
+This paper presents PURE, a posterior-preserving framework for uncertainty-aware routing in multimodal RAG. The central conclusion is that multimodal RAG routing should not be treated as a one-shot decision over retrieval actions, but as a posterior-preserving evidence-allocation process. Because heterogeneous evidence paths differ in granularity, reliability, cost, and failure modes, prematurely collapsing routing uncertainty may discard useful evidence, while indiscriminate multi-path retrieval can amplify noise and conflict. PURE operationalizes this view through evidential routing, branch-budget-aware selection, and posterior-coupled verification. Across answer-quality comparisons, transfer evaluation, routing diagnostics, budget analyses, qualitative cases, and component-level studies, the results indicate that the benefit comes not from executing more branches alone, but from preserving posterior routing signals as cross-stage decision priors. More broadly, PURE suggests that reliable multimodal RAG should treat routing uncertainty as an active operational posterior that guides evidence allocation and candidate conflict resolution throughout the retrieval-to-generation pipeline.
+
+% To print the credit authorship contribution details
+\printcredits
+
+%% Loading bibliography style file
+%\bibliographystyle{unsrtnat}
+\bibliographystyle{cas-model2-names}
+
+% Loading bibliography database
+\bibliography{cas-refs}
+
+% Biography
+%\bio{}
+% Here goes the biography details.
+%\endbio
+
+%\bio{pic1}
+% Here goes the biography details.
+%\endbio
+
+\end{document}
