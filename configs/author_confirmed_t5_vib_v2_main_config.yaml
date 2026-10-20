@@ -14,10 +14,10 @@
     "input_path": "dataset/query_nonvideo_large/router_train_4class.json",
     "checkpoint_dir": "route/train/checkpoints/t5-large_vib_large_v2",
     "init_checkpoint_dir": "",
-    "train_size": 0.9,
+    "train_size": 0.6,
     "max_input_length": 512,
     "num_train_epochs": 6,
-    "learning_rate": 2e-05,
+    "learning_rate": 2.0e-05,
     "weight_decay": 0.01,
     "train_batch_size": 1,
     "eval_batch_size": 1,
@@ -85,12 +85,12 @@
     },
     {
       "field": "train_size",
-      "value_json": "0.9",
-      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
-      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
-      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
-      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
-      "anchor": "args.train_size",
+      "value_json": "0.6",
+      "field_identity": "AUTHOR_SPECIFIED_MANUSCRIPT_SPLIT",
+      "evidence_level": "MANUSCRIPT_REPORTED_SPLIT_AND_AUTHOR_REQUESTED_CONFIGURATION_ALIGNMENT",
+      "source": "/code/universalrag/code/UniversalRAG1/els-cas-templates/pure_mark.tex",
+      "source_sha256": "0fff03f5798b08b47d74f387671c9ec019d74957468da621463eb82489ceed39",
+      "anchor": "Section 4.1: Splits and routing labels; fraction derived as 2160 / (2160 + 1440)",
       "historical_execution_bound": false
     },
     {
@@ -365,22 +365,22 @@
     },
     {
       "field": "train_count",
-      "value_json": "3240",
-      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
-      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
-      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
-      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
-      "anchor": "metadata.train_count",
+      "value_json": "2160",
+      "field_identity": "AUTHOR_SPECIFIED_MANUSCRIPT_SPLIT",
+      "evidence_level": "MANUSCRIPT_REPORTED_SPLIT_AND_AUTHOR_REQUESTED_CONFIGURATION_ALIGNMENT",
+      "source": "/code/universalrag/code/UniversalRAG1/els-cas-templates/pure_mark.tex",
+      "source_sha256": "0fff03f5798b08b47d74f387671c9ec019d74957468da621463eb82489ceed39",
+      "anchor": "Section 4.1: Splits and routing labels",
       "historical_execution_bound": false
     },
     {
       "field": "dev_count",
-      "value_json": "360",
-      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
-      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
-      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
-      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
-      "anchor": "metadata.dev_count",
+      "value_json": "1440",
+      "field_identity": "AUTHOR_SPECIFIED_MANUSCRIPT_SPLIT",
+      "evidence_level": "MANUSCRIPT_REPORTED_SPLIT_AND_AUTHOR_REQUESTED_CONFIGURATION_ALIGNMENT",
+      "source": "/code/universalrag/code/UniversalRAG1/els-cas-templates/pure_mark.tex",
+      "source_sha256": "0fff03f5798b08b47d74f387671c9ec019d74957468da621463eb82489ceed39",
+      "anchor": "Section 4.1: Splits and routing labels",
       "historical_execution_bound": false
     },
     {
@@ -676,8 +676,7 @@
     "gradient_accumulation": 16,
     "world_size": null,
     "nominal_global_batch_if_single_process": 16,
-    "tail_group_samples_if_3240_rows": 8,
-    "learning_rate": 2e-05,
+    "learning_rate": 2.0e-05,
     "weight_decay": 0.01,
     "gradient_clip_norm": 1,
     "warmup_ratio": 0.1,
@@ -685,26 +684,27 @@
       "kind": "linear warmup/decay",
       "horizon_unit": "micro-batch count",
       "step_unit": "optimizer boundary",
-      "micro_horizon_if_3240_rows": 19440,
-      "warmup_ticks_if_3240_rows": 1944,
-      "update_boundaries_if_6_epochs": 1218,
+      "update_boundaries_if_6_epochs": 810,
       "known_unit_discrepancy": true,
-      "historical_trace": null
+      "historical_trace": null,
+      "micro_horizon_if_2160_rows": 12960,
+      "warmup_ticks_if_2160_rows": 1296,
+      "calculation_scope": "Conditional current-code calculations for 2160 training rows, micro-batch 1, accumulation 16, one process, and six completed epochs; not an observed historical execution."
     },
     "precision_requested": "bf16",
     "actual_historical_precision": null,
     "seed": 42,
-    "gradient_checkpointing": true
+    "gradient_checkpointing": true,
+    "tail_group_samples_if_2160_rows": 0
   },
   "data": {
     "recorded_input_path": "dataset/query_nonvideo_large/router_train_4class.json",
     "historical_input_sha256": null,
-    "recorded_train_fraction": 0.9,
-    "recorded_train_count": 3240,
-    "recorded_dev_count": 360,
+    "recorded_train_fraction": 0.6,
+    "recorded_train_count": 2160,
+    "recorded_dev_count": 1440,
     "historical_train_member_manifest": null,
     "historical_dev_member_manifest": null,
-    "current_2160_1440_split_is_not_confirmed_main_split": true,
     "proxy_labels": {
       "mmlu": "no",
       "squad": "paragraph",
@@ -714,7 +714,9 @@
     },
     "logical_ids_not_preserved_by_current_loader": true,
     "split": "current code stratified label-level random.Random(seed), floor fraction, then shuffle each output",
-    "evidence_level": "counts verified from original config; members only reconstructed"
+    "evidence_level": "Manuscript-reported counts, adopted for the released configuration at the author request on 2026-10-20; original historical split-member identities remain unresolved.",
+    "manuscript_split_is_author_specified": true,
+    "split_count_scope": "Released configuration target counts, not independently verified historical execution counts."
   },
   "checkpoint": {
     "selection": "Macro-F1 on dev once per epoch using logits-softmax argmax",
@@ -729,12 +731,13 @@
       6
     ],
     "best_epoch_record": 5,
-    "best_epoch_full_update_count_conditional": 1015,
+    "best_epoch_full_update_count_conditional": 675,
     "candidate_path": "route/train/checkpoints/t5-large_vib_large_v2/router_model.pt",
     "candidate_sha256_inherited": "d5d7543d3d81ae1fb3184d38f674012da14f629c6e208e91a4e44c7ac1126f89",
     "actual_loaded_sha256": null,
     "wall_clock_duration": null,
-    "save_contents": "model state/tokenizer/config; no optimizer/scheduler/RNG state in current save"
+    "save_contents": "model state/tokenizer/config; no optimizer/scheduler/RNG state in current save",
+    "best_epoch_update_count_scope": "Conditional calculation for 2160 rows and 16-step accumulation at epoch 5; the saved best-epoch record does not authenticate an execution with this split."
   },
   "probability_export": {
     "directory": "route/results_vib_strict_d40_test_t5_v2/t5-large",
@@ -761,10 +764,10 @@
     "independently_bound_execution": false
   },
   "distribution": {
-    "local_config_location": "/code/universalrag/pure_revision_audits/r9_5_author_confirmed_main_training_20261013/author_confirmed_t5_vib_v2_main_config.yaml",
+    "local_config_location": "/code/universalrag/code/PURE-github/configs/author_confirmed_t5_vib_v2_main_config.yaml",
     "source_snapshot_location": "/code/universalrag/pure_revision_audits/r9_5_author_confirmed_main_training_20261013/06_reproducibility/source_snapshot",
-    "public_url": null,
-    "public_location_status": "LOCAL_ONLY; no publication performed or asserted"
+    "public_url": "https://anonymous.4open.science/r/PURE-666/",
+    "public_location_status": "Published configuration; split alignment committed to the source repository separately; anonymous mirror synchronization must be verified."
   },
   "reproduction": {
     "static_parameter_parsing": "PASS: AST-extracted real argparse-only parser; no trainer import/main",
@@ -778,8 +781,19 @@
       "initial backbone bytes and previous training provenance",
       "historical input/split-member identities",
       "actually loaded checkpoint and probability producer receipts",
-      "wall-clock duration and historical LR/update trace",
-      "public release URL"
+      "wall-clock duration and historical LR/update trace"
     ]
+  },
+  "configuration_revision": {
+    "date": "2026-10-20",
+    "reason": "Author-requested alignment of the released configuration with the manuscript-reported 2160/1440 training/development split.",
+    "previous_release_commit": "6a41b9530a920c7cdef36e4aa25785bd23afce19",
+    "previous_config_sha256": "26a2a0d8539504e362649947e7fd7f9a011606a8fc0e65f503392b62d96f64a7",
+    "manuscript_source_sha256": "0fff03f5798b08b47d74f387671c9ec019d74957468da621463eb82489ceed39",
+    "recorded_arguments_scope": "Released training specification after the author-requested split override; train_size is no longer a verbatim copy of the earlier candidate training summary.",
+    "other_parameter_evidence_scope": "Unchanged parameter evidence continues to describe its cited source; updating the released split does not relabel archived candidate records.",
+    "historical_execution_independently_verified": false,
+    "runtime_training_performed": false,
+    "historical_checkpoints_datasets_and_experiment_results_modified": false
   }
 }
