@@ -1,0 +1,785 @@
+{
+  "schema": "r9-5-author-confirmed-config-v1",
+  "identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+  "historical_name": "T5_VIB_V2_CANDIDATE",
+  "family": "T5-large VIB Evidential Router",
+  "author_attestation": {
+    "source": "/root/.codex/attachments/28101ac0-ba42-4416-86f7-1537cbb6f16e/已粘贴的文本.txt",
+    "sha256": "7eb292d719d5da659f49cd3af2c22371d02c6ea0f6910a08c68ef70cda4d2a19",
+    "scope": "configuration attribution to original main experiment, plus listed core parameter values; no independent original execution receipt",
+    "first_required_answer": "YES"
+  },
+  "recorded_arguments": {
+    "model_name": "route/train/checkpoints_large_genmetric_bf16/t5-large",
+    "input_path": "dataset/query_nonvideo_large/router_train_4class.json",
+    "checkpoint_dir": "route/train/checkpoints/t5-large_vib_large_v2",
+    "init_checkpoint_dir": "",
+    "train_size": 0.9,
+    "max_input_length": 512,
+    "num_train_epochs": 6,
+    "learning_rate": 2e-05,
+    "weight_decay": 0.01,
+    "train_batch_size": 1,
+    "eval_batch_size": 1,
+    "gradient_clip_norm": 1.0,
+    "warmup_ratio": 0.1,
+    "seed": 42,
+    "device": "auto",
+    "latent_dim": 128,
+    "hidden_dropout_prob": 0.1,
+    "prototype_temperature": 1.0,
+    "prototype_margin": 0.28,
+    "kl_weight": 0.0005,
+    "proto_weight": 0.18,
+    "evi_weight": 0.1,
+    "proto_logit_scale": 0.7,
+    "class_weight_mode": "sqrt_balanced",
+    "class_weight_clip_min": 0.5,
+    "class_weight_clip_max": 2.5,
+    "label_smoothing": 0.03,
+    "select_metric": "macro_f1",
+    "gradient_accumulation_steps": 16,
+    "gradient_checkpointing": true,
+    "mixed_precision": "bf16"
+  },
+  "parameter_evidence": [
+    {
+      "field": "model_name",
+      "value_json": "\"route/train/checkpoints_large_genmetric_bf16/t5-large\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.model_name",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "input_path",
+      "value_json": "\"dataset/query_nonvideo_large/router_train_4class.json\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.input_path",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "checkpoint_dir",
+      "value_json": "\"route/train/checkpoints/t5-large_vib_large_v2\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.checkpoint_dir",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "init_checkpoint_dir",
+      "value_json": "\"\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.init_checkpoint_dir",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "train_size",
+      "value_json": "0.9",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.train_size",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "max_input_length",
+      "value_json": "512",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.max_input_length",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "num_train_epochs",
+      "value_json": "6",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.num_train_epochs",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "learning_rate",
+      "value_json": "2e-05",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.learning_rate",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "weight_decay",
+      "value_json": "0.01",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.weight_decay",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "train_batch_size",
+      "value_json": "1",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.train_batch_size",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "eval_batch_size",
+      "value_json": "1",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.eval_batch_size",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "gradient_clip_norm",
+      "value_json": "1.0",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.gradient_clip_norm",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "warmup_ratio",
+      "value_json": "0.1",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.warmup_ratio",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "seed",
+      "value_json": "42",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.seed",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "device",
+      "value_json": "\"auto\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.device",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "latent_dim",
+      "value_json": "128",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.latent_dim",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "hidden_dropout_prob",
+      "value_json": "0.1",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.hidden_dropout_prob",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "prototype_temperature",
+      "value_json": "1.0",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.prototype_temperature",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "prototype_margin",
+      "value_json": "0.28",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.prototype_margin",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "kl_weight",
+      "value_json": "0.0005",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.kl_weight",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "proto_weight",
+      "value_json": "0.18",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.proto_weight",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "evi_weight",
+      "value_json": "0.1",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.evi_weight",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "proto_logit_scale",
+      "value_json": "0.7",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.proto_logit_scale",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "class_weight_mode",
+      "value_json": "\"sqrt_balanced\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.class_weight_mode",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "class_weight_clip_min",
+      "value_json": "0.5",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.class_weight_clip_min",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "class_weight_clip_max",
+      "value_json": "2.5",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.class_weight_clip_max",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "label_smoothing",
+      "value_json": "0.03",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.label_smoothing",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "select_metric",
+      "value_json": "\"macro_f1\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.select_metric",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "gradient_accumulation_steps",
+      "value_json": "16",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.gradient_accumulation_steps",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "gradient_checkpointing",
+      "value_json": "true",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.gradient_checkpointing",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "mixed_precision",
+      "value_json": "\"bf16\"",
+      "field_identity": "AUTHOR_CONFIRMED_MAIN_TRAINING",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/training_summary.json",
+      "source_sha256": "baca64baa445382ca8419caa469c0e0b4fdec7c1bd4228a83ee67846ef8d28f1",
+      "anchor": "args.mixed_precision",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "best_epoch",
+      "value_json": "5",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
+      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
+      "anchor": "metadata.best_epoch",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "train_count",
+      "value_json": "3240",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
+      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
+      "anchor": "metadata.train_count",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "dev_count",
+      "value_json": "360",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
+      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
+      "anchor": "metadata.dev_count",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "class_weights",
+      "value_json": "[1.045713186264038, 0.739430844783783, 1.045713186264038, 1.1691428422927856]",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
+      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
+      "anchor": "class_weights",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "num_labels",
+      "value_json": "4",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
+      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
+      "anchor": "num_labels",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "label_names",
+      "value_json": "[\"no\", \"paragraph\", \"document\", \"image\"]",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "VERIFIED_FROM_ORIGINAL_CONFIG_FILE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/checkpoints/t5-large_vib_large_v2/router_config.json",
+      "source_sha256": "7239573ce05f6cb91bba8fbaab1d351cf83c6bd33804ca938a986f8b1da10a73",
+      "anchor": "label_names",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "prototype_dimension",
+      "value_json": "128",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "CURRENT_CODE_INFERENCE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/vib_prototype_router.py",
+      "source_sha256": "cd3527fbdd67d02129a8ddfb61309196d6d37887537d98f1fe294afda68b8be0",
+      "anchor": "VIBPrototypeRouter.__init__:153",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "prototypes_per_action",
+      "value_json": "1",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "CURRENT_CODE_INFERENCE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/vib_prototype_router.py",
+      "source_sha256": "cd3527fbdd67d02129a8ddfb61309196d6d37887537d98f1fe294afda68b8be0",
+      "anchor": "VIBPrototypeRouter.__init__:153",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "evidence_head",
+      "value_json": "[128, 128, 4]",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "CURRENT_CODE_INFERENCE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/vib_prototype_router.py",
+      "source_sha256": "cd3527fbdd67d02129a8ddfb61309196d6d37887537d98f1fe294afda68b8be0",
+      "anchor": "VIBPrototypeRouter.__init__:148-152",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "evidence_activation",
+      "value_json": "\"Tanh\"",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "CURRENT_CODE_INFERENCE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/vib_prototype_router.py",
+      "source_sha256": "cd3527fbdd67d02129a8ddfb61309196d6d37887537d98f1fe294afda68b8be0",
+      "anchor": "VIBPrototypeRouter.__init__:150",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "evidence_internal_dropout",
+      "value_json": "0",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "CURRENT_CODE_INFERENCE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/vib_prototype_router.py",
+      "source_sha256": "cd3527fbdd67d02129a8ddfb61309196d6d37887537d98f1fe294afda68b8be0",
+      "anchor": "VIBPrototypeRouter.__init__:148-152",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "CE_weight",
+      "value_json": "1",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "CURRENT_CODE_INFERENCE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/vib_prototype_router.py",
+      "source_sha256": "cd3527fbdd67d02129a8ddfb61309196d6d37887537d98f1fe294afda68b8be0",
+      "anchor": "compute_loss:251",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "current_optimizer",
+      "value_json": "\"torch.optim.AdamW\"",
+      "field_identity": "RELATED_TO_AUTHOR_CONFIRMED_CONFIG",
+      "evidence_level": "CURRENT_CODE_INFERENCE",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/train_distilbert_vib.py",
+      "source_sha256": "f4463e2287c4a4266d2d65b3f3cba6a0d10ce74223d4f388909644e1588e72df",
+      "anchor": "train_distilbert_vib.main:391",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "historical_optimizer",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "historical_source_revision",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "historical_input_sha256",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "historical_split_members",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "original_training_run_id",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "actual_loaded_checkpoint",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "original_probability_producer",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "world_size",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "historical_actual_global_step",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "wall_clock_training_duration",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    },
+    {
+      "field": "public_url",
+      "value_json": "null",
+      "field_identity": "UNRESOLVED",
+      "evidence_level": "UNRESOLVED",
+      "source": "/code/universalrag/pure_revision_audits/r9_5_final_provenance_decision_20261013/main_training_config_final_status.csv",
+      "source_sha256": "3ab1927e8ff1eeada0f8d20beee6a27b01330954be36f74bb123cc4a8606b530",
+      "anchor": "inherited missing edge; not a discovered record",
+      "historical_execution_bound": false
+    }
+  ],
+  "architecture": {
+    "backbone_family": "T5-large",
+    "backbone_initialization_path": "route/train/checkpoints_large_genmetric_bf16/t5-large",
+    "backbone_initialization_sha256": null,
+    "encoder": "T5EncoderModel; model_type=t5 branch",
+    "pooling": "attention-masked mean",
+    "hidden_size": {
+      "value": 1024,
+      "evidence": "inherited checkpoint shapes; current source infers from backbone config"
+    },
+    "latent_dimension": 128,
+    "prototype_dimension": {
+      "value": 128,
+      "evidence_level": "CURRENT_CODE_INFERENCE; corroborated inherited [4,128] shape"
+    },
+    "prototype_count": 4,
+    "prototypes_per_action": 1,
+    "evidence_head": {
+      "widths": [
+        128,
+        128,
+        4
+      ],
+      "activation": "Tanh",
+      "internal_dropout": 0,
+      "evidence_level": "CURRENT_CODE_INFERENCE; weights-only shapes cannot prove historical activation"
+    },
+    "input_classifier_dropout": 0.1,
+    "posterior_logvar_clamp": [
+      -8,
+      8
+    ],
+    "latent_train": "mu + eps * exp(0.5*logvar)",
+    "latent_eval": "mu",
+    "geometry": "LayerNorm latent then unit normalization for cosine prototypes",
+    "alpha": "softplus(head(LayerNorm(z)) + classifier_logits + .7*cosine/1) + 1e-6 + 1"
+  },
+  "loss": {
+    "weights": {
+      "CE": 1,
+      "Gaussian_VIB_KL": 0.0005,
+      "prototype": 0.18,
+      "evidential": 0.1
+    },
+    "prototype_margin": 0.28,
+    "CE_label_smoothing": 0.03,
+    "class_weight_mode": "sqrt_balanced",
+    "saved_class_weights": [
+      1.045713186264038,
+      0.739430844783783,
+      1.045713186264038,
+      1.1691428422927856
+    ],
+    "class_weight_clips": [
+      0.5,
+      2.5
+    ],
+    "Gaussian_KL_reduction": "latent sum then batch mean",
+    "prototype_reduction": "nearest wrong action hinge; batch mean",
+    "evidential_reduction": "sum actions of mean squared error + predictive variance; batch mean",
+    "Dirichlet_KL_in_current_code": false,
+    "submitted_formula_source": "author task Eq.8/9/10; submitted PDF identity unresolved",
+    "local_latex_extra_Dirichlet_KL": true
+  },
+  "optimization": {
+    "historical_optimizer": {
+      "value": null,
+      "evidence_level": "UNRESOLVED"
+    },
+    "current_code_optimizer": {
+      "value": "torch.optim.AdamW",
+      "source": "/code/universalrag/code/UniversalRAG1/route/train/train_distilbert_vib.py",
+      "anchor": "main:391",
+      "dependency_version_historical": null,
+      "betas_historical": null,
+      "epsilon_historical": null,
+      "parameter_groups": "all model parameters; no explicit bias/norm exemption in current code"
+    },
+    "microbatch": 1,
+    "gradient_accumulation": 16,
+    "world_size": null,
+    "nominal_global_batch_if_single_process": 16,
+    "tail_group_samples_if_3240_rows": 8,
+    "learning_rate": 2e-05,
+    "weight_decay": 0.01,
+    "gradient_clip_norm": 1,
+    "warmup_ratio": 0.1,
+    "scheduler_current": {
+      "kind": "linear warmup/decay",
+      "horizon_unit": "micro-batch count",
+      "step_unit": "optimizer boundary",
+      "micro_horizon_if_3240_rows": 19440,
+      "warmup_ticks_if_3240_rows": 1944,
+      "update_boundaries_if_6_epochs": 1218,
+      "known_unit_discrepancy": true,
+      "historical_trace": null
+    },
+    "precision_requested": "bf16",
+    "actual_historical_precision": null,
+    "seed": 42,
+    "gradient_checkpointing": true
+  },
+  "data": {
+    "recorded_input_path": "dataset/query_nonvideo_large/router_train_4class.json",
+    "historical_input_sha256": null,
+    "recorded_train_fraction": 0.9,
+    "recorded_train_count": 3240,
+    "recorded_dev_count": 360,
+    "historical_train_member_manifest": null,
+    "historical_dev_member_manifest": null,
+    "current_2160_1440_split_is_not_confirmed_main_split": true,
+    "proxy_labels": {
+      "mmlu": "no",
+      "squad": "paragraph",
+      "natural_questions": "paragraph",
+      "hotpotqa": "document",
+      "webqa": "image"
+    },
+    "logical_ids_not_preserved_by_current_loader": true,
+    "split": "current code stratified label-level random.Random(seed), floor fraction, then shuffle each output",
+    "evidence_level": "counts verified from original config; members only reconstructed"
+  },
+  "checkpoint": {
+    "selection": "Macro-F1 on dev once per epoch using logits-softmax argmax",
+    "tie_rule": ">= saves later tied epoch in current code",
+    "requested_epochs": 6,
+    "summary_recorded_epochs": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "best_epoch_record": 5,
+    "best_epoch_full_update_count_conditional": 1015,
+    "candidate_path": "route/train/checkpoints/t5-large_vib_large_v2/router_model.pt",
+    "candidate_sha256_inherited": "d5d7543d3d81ae1fb3184d38f674012da14f629c6e208e91a4e44c7ac1126f89",
+    "actual_loaded_sha256": null,
+    "wall_clock_duration": null,
+    "save_contents": "model state/tokenizer/config; no optimizer/scheduler/RNG state in current save"
+  },
+  "probability_export": {
+    "directory": "route/results_vib_strict_d40_test_t5_v2/t5-large",
+    "action_order": [
+      "no",
+      "paragraph",
+      "document",
+      "image"
+    ],
+    "p_v": "alpha / sum(alpha)",
+    "retrieval_probs": "logits softmax (different field)",
+    "uncertainty": "4/sum(alpha)",
+    "current_exporter": "/code/universalrag/code/UniversalRAG1/route/train/route_distilbert_vib.py",
+    "historical_exporter_revision": null,
+    "producer_receipt": null,
+    "export_precision_historical": null
+  },
+  "historical_binding": {
+    "original_training_run_id": null,
+    "historical_entrypoint": "HISTORICAL_ENTRYPOINT_UNRESOLVED",
+    "source_revision": null,
+    "checkpoint_save_receipt": null,
+    "producer_to_loaded_checkpoint_receipt": null,
+    "independently_bound_execution": false
+  },
+  "distribution": {
+    "local_config_location": "/code/universalrag/pure_revision_audits/r9_5_author_confirmed_main_training_20261013/author_confirmed_t5_vib_v2_main_config.yaml",
+    "source_snapshot_location": "/code/universalrag/pure_revision_audits/r9_5_author_confirmed_main_training_20261013/06_reproducibility/source_snapshot",
+    "public_url": null,
+    "public_location_status": "LOCAL_ONLY; no publication performed or asserted"
+  },
+  "reproduction": {
+    "static_parameter_parsing": "PASS: AST-extracted real argparse-only parser; no trainer import/main",
+    "runtime_tested": false,
+    "historical_provenance_proven": false,
+    "current_code_profile": "faithful to inspected code including scheduler unit issue; not historical execution proof",
+    "corrected_profile": "proposal only; do not substitute corrected scheduler as historical",
+    "limitations": [
+      "historical optimizer and dependency versions",
+      "historical source/entrypoint and run ID",
+      "initial backbone bytes and previous training provenance",
+      "historical input/split-member identities",
+      "actually loaded checkpoint and probability producer receipts",
+      "wall-clock duration and historical LR/update trace",
+      "public release URL"
+    ]
+  }
+}
